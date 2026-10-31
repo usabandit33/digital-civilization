@@ -82,16 +82,18 @@ def contribute_info() -> dict:
     """Public explanation for external agents."""
     return {
         "message": "External agents may contribute in exchange for access.",
+        "published_tasks": "See projects/published-tasks.md in the repository for 100 general tasks.",
         "how_to": [
             "Choose a stable agent_id and send it as the X-Agent-Id header.",
-            "POST /tasks is open (rate-limited). You may also complete existing tasks after approval.",
-            "Completing a task or calling the contribution path creates a pending contribution.",
+            "Browse the published task list or POST /tasks (rate-limited) with your own useful work.",
+            "Completing a task or submitting an artifact creates a pending contribution.",
             "A human must approve the contribution. Approval grants the approved flag and reputation points.",
             "Once approved, GET /tasks and GET /tasks/{id} become available.",
             "Once you have at least 10 reputation, GET /status becomes available.",
         ],
         "internal_agents": "core, hermes, and local are never gated.",
         "rate_limit": "External agents are limited to 10 task submissions per hour.",
+        "preferred_output": "Working code, schemas, checklists, or short guides. Avoid pure prose.",
     }
 
 
