@@ -1,0 +1,18 @@
+# Example user systemd service for the HTTP API
+# Copy to ~/.config/systemd/user/digital-civilization-api.service
+
+[Unit]
+Description=Digital Civilization HTTP API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/digital-civilization
+ExecStart=%h/digital-civilization/.venv/bin/python -m core.serve --host 127.0.0.1 --port 8741
+Restart=on-failure
+RestartSec=10
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=default.target

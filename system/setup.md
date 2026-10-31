@@ -51,40 +51,49 @@ pip install -r core/requirements.txt
 python -m core.init_db
 ```
 
-## 6. First run (manual)
+## 6. Run the system
 
+You need two processes (use tmux or two terminals):
+
+**Worker** (processes tasks):
 ```bash
 source .venv/bin/activate
+python -m core.main
+```
+
+**API** (lets other agents submit work):
+```bash
+source .venv/bin/activate
+python -m core.serve
+```
+
+The API defaults to `http://127.0.0.1:8741`.
+
+### One-shot test
+
+```bash
+python -m core.add_task "Summarize the current Phase 1 objectives in three bullet points"
 python -m core.main --once
 ```
 
-This processes one task (or idles cleanly if the queue is empty) and writes a journal entry.
+## 7. Continuous operation (systemd)
 
-## 7. Run continuously (systemd)
+Example user services are in `system/`. You will typically want two units:
 
-Create a user service (example):
+- one for the worker (`core.main`)
+- one for the API (`core.serve`)
 
-```bash
-mkdir -p ~/.config/systemd/user
-```
-
-Then create `~/.config/systemd/user/digital-civilization.service` with content similar to the example in `system/systemd.example`.
-
-Enable and start:
-
-```bash
-systemctl --user daemon-reload
-systemctl --user enable --now digital-civilization.service
-```
+See `system/systemd.example` and create a second unit for the API if desired.
 
 ## 8. After setup
 
 1. Update `system/hardware-notes.md` with real numbers from the machine.
-2. Run the Bootstrap Agent (see `agents/bootstrap-agent.md`) or manually create a journal entry.
-3. Begin Phase 1 work: first real tools and a small invention.
+2. Confirm both worker and API are running.
+3. Submit a test task via curl or another agent.
+4. Begin adding the first real tools.
 
 ## Safety notes
 
-- Do not run the service as root.
-- Keep the working directory and database inside the repository or a clearly defined data path.
+- Do not run the services as root.
+- API is bound to localhost by default. Only expose it (via Tailscale, reverse proxy, etc.) after you understand the risk.
 - Review any new tool before giving it network or shell access.
