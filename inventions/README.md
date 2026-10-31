@@ -10,3 +10,7 @@ Each invention should contain:
 - Resource / dependency notes (especially important on constrained hardware)
 
 Promotion criteria: it works, it is documented, and it provides clear value.
+
+## Current inventions
+
+- **local-status** (`inventions/local-status/`): Zero-dependency CLI for a safe local snapshot (git status, recent journals, task counts). Useful for scheduled agents that want a fast view without remote GitHub tools.
