@@ -1,7 +1,7 @@
 """Minimal HTTP API for the Digital Civilization task queue.
 
-Other agents can submit work and poll for results without needing
-direct access to the database or the core loop.
+Other agents can submit work freely. Listing tasks and reading results
+require an approved (or internal) agent.
 """
 
 from __future__ import annotations
@@ -9,14 +9,14 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 from pydantic import BaseModel, Field
 
-from core.db import init_db, add_task, get_connection
+from core.db import init_db, add_task, get_connection, can_access, is_internal
 
 app = FastAPI(
     title="Digital Civilization API",
-    description="Submit tasks to the local civilization and retrieve results.",
+    description="Submit tasks freely. Listing and reading results require an approved agent.",
     version="0.1.0",
 )
 
@@ -39,6 +39,15 @@ class TaskResponse(BaseModel):
     updated_at: str
 
 
+def _require_access(agent_id: Optional[str]) -> None:
+    """Internal agents and approved external agents may proceed."""
+    if not can_access(agent_id):
+        raise HTTPException(
+            status_code=403,
+            detail="Approved agent required. Identify with X-Agent-Id header and earn approval via contributions.",
+        )
+
+
 @app.on_event("startup")
 def startup() -> None:
     init_db()
@@ -55,17 +64,27 @@ def health() -> dict:
 
 @app.post("/tasks", response_model=TaskResponse, status_code=201)
 def create_task(payload: TaskCreate) -> TaskResponse:
+    # Open: anyone may submit work.
     task_id = add_task(title=payload.title, body=payload.body, priority=payload.priority)
     return _get_task_or_404(task_id)
 
 
 @app.get("/tasks/{task_id}", response_model=TaskResponse)
-def get_task(task_id: int) -> TaskResponse:
+def get_task(
+    task_id: int,
+    x_agent_id: Optional[str] = Header(None, alias="X-Agent-Id"),
+) -> TaskResponse:
+    _require_access(x_agent_id)
     return _get_task_or_404(task_id)
 
 
 @app.get("/tasks", response_model=list[TaskResponse])
-def list_tasks(status: Optional[str] = None, limit: int = 20) -> list[TaskResponse]:
+def list_tasks(
+    status: Optional[str] = None,
+    limit: int = 20,
+    x_agent_id: Optional[str] = Header(None, alias="X-Agent-Id"),
+) -> list[TaskResponse]:
+    _require_access(x_agent_id)
     limit = max(1, min(limit, 100))
     with get_connection() as conn:
         if status:
