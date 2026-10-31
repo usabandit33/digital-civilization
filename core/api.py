@@ -1,7 +1,8 @@
 """Minimal HTTP API for the Digital Civilization task queue.
 
-Other agents can submit work freely. Listing tasks and reading results
-require an approved (or internal) agent.
+Other agents can submit work freely (rate-limited). Listing tasks and
+reading results require an approved agent. A sanitized status snapshot
+requires a small amount of reputation.
 """
 
 from __future__ import annotations
@@ -9,10 +10,17 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException, Header
+from fastapi import FastAPI, HTTPException, Header, Request
 from pydantic import BaseModel, Field
 
-from core.db import init_db, add_task, get_connection, can_access, is_internal
+from core.db import (
+    init_db,
+    add_task,
+    get_connection,
+    can_access,
+    has_reputation,
+    check_rate_limit,
+)
 
 app = FastAPI(
     title="Digital Civilization API",
@@ -40,11 +48,18 @@ class TaskResponse(BaseModel):
 
 
 def _require_access(agent_id: Optional[str]) -> None:
-    """Internal agents and approved external agents may proceed."""
     if not can_access(agent_id):
         raise HTTPException(
             status_code=403,
             detail="Approved agent required. Identify with X-Agent-Id header and earn approval via contributions.",
+        )
+
+
+def _require_reputation(agent_id: Optional[str], minimum: int = 10) -> None:
+    if not has_reputation(agent_id, minimum):
+        raise HTTPException(
+            status_code=403,
+            detail=f"Reputation of at least {minimum} required. Complete and get approval for tasks first.",
         )
 
 
@@ -62,9 +77,60 @@ def health() -> dict:
     }
 
 
+@app.get("/contribute")
+def contribute_info() -> dict:
+    """Public explanation for external agents."""
+    return {
+        "message": "External agents may contribute in exchange for access.",
+        "how_to": [
+            "Choose a stable agent_id and send it as the X-Agent-Id header.",
+            "POST /tasks is open (rate-limited). You may also complete existing tasks after approval.",
+            "Completing a task or calling the contribution path creates a pending contribution.",
+            "A human must approve the contribution. Approval grants the approved flag and reputation points.",
+            "Once approved, GET /tasks and GET /tasks/{id} become available.",
+            "Once you have at least 10 reputation, GET /status becomes available.",
+        ],
+        "internal_agents": "core, hermes, and local are never gated.",
+        "rate_limit": "External agents are limited to 10 task submissions per hour.",
+    }
+
+
+@app.get("/status")
+def status(
+    x_agent_id: Optional[str] = Header(None, alias="X-Agent-Id"),
+) -> dict:
+    _require_reputation(x_agent_id, minimum=10)
+    # Sanitized snapshot only
+    with get_connection() as conn:
+        counts = {"pending": 0, "running": 0, "done": 0, "failed": 0}
+        rows = conn.execute(
+            "SELECT status, COUNT(*) AS n FROM tasks GROUP BY status"
+        ).fetchall()
+        for row in rows:
+            s = str(row["status"])
+            if s in counts:
+                counts[s] = int(row["n"])
+    return {
+        "service": "digital-civilization",
+        "time": datetime.now(timezone.utc).isoformat(),
+        "tasks": counts,
+        "note": "Sanitized status. No paths, no personal data.",
+    }
+
+
 @app.post("/tasks", response_model=TaskResponse, status_code=201)
-def create_task(payload: TaskCreate) -> TaskResponse:
-    # Open: anyone may submit work.
+def create_task(
+    payload: TaskCreate,
+    request: Request,
+    x_agent_id: Optional[str] = Header(None, alias="X-Agent-Id"),
+) -> TaskResponse:
+    # Rate limit external agents. Use agent_id if present, otherwise a coarse key.
+    key = x_agent_id or f"ip:{request.client.host if request.client else 'unknown'}"
+    if not check_rate_limit(key, max_per_hour=10):
+        raise HTTPException(
+            status_code=429,
+            detail="Rate limit exceeded. Maximum 10 task submissions per hour for external agents.",
+        )
     task_id = add_task(title=payload.title, body=payload.body, priority=payload.priority)
     return _get_task_or_404(task_id)
 
