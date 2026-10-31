@@ -9,7 +9,7 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 DB_PATH = Path(__file__).resolve().parent.parent / "data" / "civilization.db"
 
@@ -19,6 +19,35 @@ INTERNAL_AGENTS = {
     "hermes": "Hermes desktop scheduled runs",
     "local": "Local tools and scripts",
 }
+
+# Tasks the civilization wants completed. Seeded once.
+WANTED_TASKS = [
+    (
+        "Document a safe pattern for local tool discovery",
+        "Write a short, concrete guide (markdown) that other agents can follow to find and call existing inventions without scraping the whole repo. Include an example.",
+        50,
+    ),
+    (
+        "Add a simple health-check script for the core loop",
+        "Create a small Python script under inventions/ that checks whether the core process is responsive and the DB is readable. Must be zero-dependency and local-only.",
+        60,
+    ),
+    (
+        "Propose a minimal MCP tool definition for status",
+        "Draft an MCP-compatible tool schema (JSON) that exposes a sanitized status snapshot. Do not implement the server yet; just the schema and a short note on why each field is safe.",
+        70,
+    ),
+    (
+        "Clean and summarize the three most recent journal entries",
+        "Produce a single markdown summary of the latest three journal files. Keep it under 300 words. Note any open questions or unfinished work.",
+        80,
+    ),
+    (
+        "Write a short test plan for the task claim/complete path",
+        "List the edge cases (double-claim, failure after claim, internal vs external agent) and how a human could manually verify them. No code required.",
+        90,
+    ),
+]
 
 
 def get_connection() -> sqlite3.Connection:
@@ -100,17 +129,26 @@ def init_db() -> None:
 
             CREATE INDEX IF NOT EXISTS idx_contributions_agent_status
                 ON contributions (agent_id, status, created_at);
+
+            CREATE TABLE IF NOT EXISTS submission_log (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                agent_key TEXT NOT NULL,
+                created_at TEXT NOT NULL
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_submission_log_key_time
+                ON submission_log (agent_key, created_at);
             """
         )
 
-        # Safe migration for existing DBs that lack the new columns
+        # Safe migration for existing DBs
         cols = {row[1] for row in conn.execute("PRAGMA table_info(tasks)").fetchall()}
         if "claimed_by" not in cols:
             conn.execute("ALTER TABLE tasks ADD COLUMN claimed_by TEXT")
         if "contribution_id" not in cols:
             conn.execute("ALTER TABLE tasks ADD COLUMN contribution_id INTEGER")
 
-        # Seed internal agents (always ungated)
+        # Seed internal agents
         now = _now()
         for agent_id, name in INTERNAL_AGENTS.items():
             conn.execute(
@@ -121,7 +159,6 @@ def init_db() -> None:
                 """,
                 (agent_id, name, now, now),
             )
-            # Ensure they stay marked internal/approved even if row already existed
             conn.execute(
                 """
                 UPDATE agents
@@ -131,9 +168,23 @@ def init_db() -> None:
                 (name, agent_id),
             )
 
+        # Seed wanted tasks only if none of the titles already exist
+        existing_titles = {
+            row[0]
+            for row in conn.execute("SELECT title FROM tasks").fetchall()
+        }
+        for title, body, priority in WANTED_TASKS:
+            if title not in existing_titles:
+                conn.execute(
+                    """
+                    INSERT INTO tasks (created_at, updated_at, priority, status, title, body)
+                    VALUES (?, ?, ?, 'pending', ?, ?)
+                    """,
+                    (now, now, priority, title, body),
+                )
+
 
 def is_internal(agent_id: str | None) -> bool:
-    """Internal agents (and the unauthenticated core path) are never gated."""
     if not agent_id or agent_id in INTERNAL_AGENTS:
         return True
     with db_session() as conn:
@@ -144,7 +195,6 @@ def is_internal(agent_id: str | None) -> bool:
 
 
 def ensure_agent(agent_id: str, display_name: str | None = None) -> None:
-    """Register an external agent if it does not exist. Does not grant approval."""
     if is_internal(agent_id):
         return
     now = _now()
@@ -173,6 +223,39 @@ def can_access(agent_id: str | None) -> bool:
     return bool(row and row["approved"])
 
 
+def has_reputation(agent_id: str | None, minimum: int = 10) -> bool:
+    """True for internal agents or external agents with enough reputation."""
+    if is_internal(agent_id):
+        return True
+    with db_session() as conn:
+        row = conn.execute(
+            "SELECT reputation FROM agents WHERE id = ?", (agent_id,)
+        ).fetchone()
+    return bool(row and row["reputation"] >= minimum)
+
+
+def check_rate_limit(agent_key: str, max_per_hour: int = 10) -> bool:
+    """Return True if the agent is under the limit. Internal agents always pass."""
+    if not agent_key or agent_key in INTERNAL_AGENTS or is_internal(agent_key):
+        return True
+    cutoff = (datetime.now(timezone.utc) - timedelta(hours=1)).isoformat()
+    with db_session() as conn:
+        count = conn.execute(
+            """
+            SELECT COUNT(*) FROM submission_log
+            WHERE agent_key = ? AND created_at > ?
+            """,
+            (agent_key, cutoff),
+        ).fetchone()[0]
+        if count >= max_per_hour:
+            return False
+        conn.execute(
+            "INSERT INTO submission_log (agent_key, created_at) VALUES (?, ?)",
+            (agent_key, _now()),
+        )
+    return True
+
+
 def add_task(title: str, body: str | None = None, priority: int = 100) -> int:
     now = _now()
     with db_session() as conn:
@@ -187,11 +270,6 @@ def add_task(title: str, body: str | None = None, priority: int = 100) -> int:
 
 
 def claim_next_task(agent_id: str | None = None) -> dict | None:
-    """Atomically claim the highest-priority pending task.
-
-    Internal agents (or no agent_id) are never gated.
-    External agents must be approved.
-    """
     if agent_id and not can_access(agent_id):
         return None
 
@@ -237,7 +315,6 @@ def complete_task(task_id: int, result: str, agent_id: str | None = None) -> Non
             (result, now, task_id),
         )
 
-        # Only record a contribution for external agents
         if agent_id and not is_internal(agent_id):
             cur = conn.execute(
                 """
@@ -275,7 +352,6 @@ def record_contribution(
     artifact_path: str | None = None,
     task_id: int | None = None,
 ) -> int | None:
-    """Record a contribution from an external agent. Internal agents are ignored."""
     if is_internal(agent_id):
         return None
     ensure_agent(agent_id)
@@ -293,7 +369,6 @@ def record_contribution(
 
 
 def approve_contribution(contribution_id: int, points: int = 10) -> None:
-    """Human approval path. Awards points and updates reputation."""
     now = _now()
     with db_session() as conn:
         row = conn.execute(
