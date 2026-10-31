@@ -1,63 +1,30 @@
 # Hardware & Resource Notes
 
-**Last updated:** 2026-10-31
+**This file is intentionally generic.**
 
-This file is the authoritative resource budget for the Digital Civilization. Every agent and process must respect these limits.
+Do not commit machine-specific diagnostics, hostnames, usernames, IP addresses, or other personal environment details to the public repository.
 
-## Current Observed Environment (2026-10-31)
+## Design Constraints (public)
 
-Diagnostics were run from **Git Bash on Windows** (UCRT64), not a native Linux laptop.
+The Digital Civilization is designed to remain viable on constrained hardware:
 
-| Item | Value | Notes |
-|------|-------|-------|
-| Host OS | Windows | Git Bash / MSYS2 UCRT64 environment |
-| Shell | Git Bash | Many Linux utilities (`free`, `lscpu`, `hostnamectl`, `lsblk`, `swapon`) are unavailable |
-| Python | 3.14.6 | |
-| Ollama | 0.40.13 | Installed and working |
-| Disk (Git view) | ~476 GB total, ~250 GB free | Root shown as `C:/Program Files/Git` |
+- Limited RAM (target class: ~8 GB)
+- Modest CPU (older dual-core / low single-thread performance)
+- CPU-only inference expected
+- Prefer one model loaded at a time
+- Prefer SQLite + files over large in-memory stores
+- Queue work instead of running many heavy tasks concurrently
+- Keep context windows modest
 
-### Available Ollama models (at time of measurement)
+## Local (private) notes
 
-| Model | Size | Notes |
-|-------|------|-------|
-| qwen3.5:4b | 3.3 GB | Good candidate for constrained / local work |
-| hermes3:latest | 4.7 GB | |
-| humanity:latest | 4.9 GB | |
-| mattmurdock32/llama-humanity:latest | 4.9 GB | |
-| mattmurdock32/humanity:latest | 4.9 GB | |
-| gemma4:e4b-it-qat | 6.1 GB | Heavier |
-| minimax-m3.1-flash:cloud | — | Cloud |
+If you need to record real machine details for your own use, keep them outside the public repo (for example in a private local file that is gitignored, or in a private fork).
 
-## Original Target (still relevant)
-
-The project was originally designed for an older Linux laptop (~8 GB RAM, dual-core era CPU). Designs should remain viable under those constraints even when developed on a stronger Windows machine.
-
-| Item | Target value | Notes |
-|------|--------------|-------|
-| Machine | Older laptop (Lenovo G500s class) | Dual-core era CPU |
-| RAM | ~7.6–8 GB | Critical constraint on the intended runtime host |
-| CPU | i5-3230M or similar | Low single-thread performance |
-| GPU | None / very weak | CPU-only inference expected |
+Suggested local-only file name: `system/hardware-notes.local.md` (already covered by common ignore patterns if you add it).
 
 ## Runtime Rules
 
-- Prefer **one model loaded at a time**.
-- On the Windows development machine, `qwen3.5:4b` is a reasonable default; heavier models are available but should not be assumed on the eventual Linux host.
-- Keep context modest.
-- Prefer SQLite + files over large in-memory stores.
-- Queue work instead of running many heavy tasks concurrently.
-- When moving to the real Linux laptop, re-run diagnostics and replace the numbers in this file.
-
-## How to update this file
-
-On a real Linux host, run:
-
-```bash
-free -h
-lscpu | grep -E 'Model name|CPU\(s\)|Thread|Core'
-df -h /
-swapon --show
-ollama list
-```
-
-Then update the tables above and commit.
+- One model at a time when resources are tight
+- Monitor memory before launching browser automation or multiple services
+- Prefer small, tested tools over large always-on processes
+- Re-evaluate limits whenever the host machine changes
