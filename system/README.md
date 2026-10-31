@@ -1,14 +1,18 @@
 # System
 
-Deployment, operations, and constraints.
+Deployment, operations, and constraints for the Digital Civilization.
 
-This directory should eventually contain:
+## Current contents
 
-- Hardware and resource notes for the target machine
-- systemd unit files or equivalent for always-on components
-- Docker / isolation notes if used
-- Health check and monitoring approach
-- How to start the civilization after a reboot
-- Safety and sandboxing practices
+| File | Purpose |
+|------|---------|
+| `hardware-notes.md` | Authoritative resource budget and machine constraints |
+| `setup.md` | Step-by-step setup instructions |
+| `systemd.example` | Example user systemd unit for continuous operation |
 
-Until populated, assume constrained resources (~8 GB RAM) and prefer simple, robust processes.
+## Design goals
+
+- Stay runnable on ~8 GB RAM
+- Survive reboots via systemd (user service preferred)
+- Keep the core loop simple and observable
+- Make it easy for a new agent to understand the runtime state

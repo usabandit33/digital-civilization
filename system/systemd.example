@@ -1,0 +1,22 @@
+# Example user systemd service
+# Copy to ~/.config/systemd/user/digital-civilization.service
+# Then: systemctl --user daemon-reload && systemctl --user enable --now digital-civilization.service
+
+[Unit]
+Description=Digital Civilization core loop
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/digital-civilization
+ExecStart=%h/digital-civilization/.venv/bin/python -m core.main
+Restart=on-failure
+RestartSec=30
+Environment=PYTHONUNBUFFERED=1
+
+# Optional resource limits (adjust as needed)
+# MemoryMax=2G
+
+[Install]
+WantedBy=default.target
