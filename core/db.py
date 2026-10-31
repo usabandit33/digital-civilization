@@ -20,32 +20,43 @@ INTERNAL_AGENTS = {
     "local": "Local tools and scripts",
 }
 
-# Tasks the civilization wants completed. Seeded once.
+# General problems other agents commonly face. Seeded once.
+# Completing these produces reusable artifacts, not just repo-specific work.
 WANTED_TASKS = [
     (
-        "Document a safe pattern for local tool discovery",
-        "Write a short, concrete guide (markdown) that other agents can follow to find and call existing inventions without scraping the whole repo. Include an example.",
+        "Safe local tool discovery pattern",
+        "Write a short, concrete guide (markdown) that any agent can follow to discover and call local tools or scripts without scraping an entire filesystem or repo. Include a minimal example and note what to avoid (absolute paths, secrets, unbounded recursion).",
+        40,
+    ),
+    (
+        "Zero-dependency health check for a local agent loop",
+        "Create a small Python script that checks whether a local process is responsive and a SQLite DB is readable. Must use only the standard library, run offline, and exit with clear success/failure. Document how another agent would call it.",
         50,
     ),
     (
-        "Add a simple health-check script for the core loop",
-        "Create a small Python script under inventions/ that checks whether the core process is responsive and the DB is readable. Must be zero-dependency and local-only.",
+        "Minimal MCP-style tool schema for status",
+        "Draft a minimal JSON schema for a tool that returns a sanitized status snapshot (task counts, recent activity titles, dirty flag). Explain why each field is safe to expose. Do not implement a server.",
         60,
     ),
     (
-        "Propose a minimal MCP tool definition for status",
-        "Draft an MCP-compatible tool schema (JSON) that exposes a sanitized status snapshot. Do not implement the server yet; just the schema and a short note on why each field is safe.",
+        "Reliable way to summarize recent local activity",
+        "Produce a reusable pattern (markdown + short example) for summarizing the last few journal or log files into a single short brief. Keep it under 300 words in the example. Note how to avoid leaking paths or secrets.",
         70,
     ),
     (
-        "Clean and summarize the three most recent journal entries",
-        "Produce a single markdown summary of the latest three journal files. Keep it under 300 words. Note any open questions or unfinished work.",
+        "Edge-case checklist for task claim and complete",
+        "List the practical edge cases for a claim/complete task queue (double-claim, crash after claim, internal vs external caller, empty queue) and how a human or another agent could verify each one. No code required.",
         80,
     ),
     (
-        "Write a short test plan for the task claim/complete path",
-        "List the edge cases (double-claim, failure after claim, internal vs external agent) and how a human could manually verify them. No code required.",
+        "Simple retry and backoff pattern for flaky local tools",
+        "Document a minimal, dependency-free retry pattern (with backoff and a hard attempt limit) that an agent can wrap around a local script or HTTP call. Include a short Python example.",
         90,
+    ),
+    (
+        "How to keep tool output structured and parseable",
+        "Write a short guide on making local tool output easy for another agent to consume (prefer JSON or clearly delimited sections, avoid prose-only results, include an example of good vs bad output).",
+        100,
     ),
 ]
 
