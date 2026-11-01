@@ -2,6 +2,8 @@
 
 Internal agents (core loop, local Hermes, etc.) are never gated.
 Only external agents are subject to reputation / approval checks.
+
+A missing or empty agent_id is treated as anonymous external, not internal.
 """
 
 from __future__ import annotations
@@ -196,7 +198,10 @@ def init_db() -> None:
 
 
 def is_internal(agent_id: str | None) -> bool:
-    if not agent_id or agent_id in INTERNAL_AGENTS:
+    """True only for known internal agents. Missing or empty id is external."""
+    if not agent_id or not agent_id.strip():
+        return False
+    if agent_id in INTERNAL_AGENTS:
         return True
     with db_session() as conn:
         row = conn.execute(
@@ -206,7 +211,7 @@ def is_internal(agent_id: str | None) -> bool:
 
 
 def ensure_agent(agent_id: str, display_name: str | None = None) -> None:
-    if is_internal(agent_id):
+    if not agent_id or is_internal(agent_id):
         return
     now = _now()
     with db_session() as conn:
@@ -224,7 +229,11 @@ def ensure_agent(agent_id: str, display_name: str | None = None) -> None:
 
 
 def can_access(agent_id: str | None) -> bool:
-    """True for internal agents or approved external agents."""
+    """True for internal agents or approved external agents.
+    Missing agent_id is never allowed.
+    """
+    if not agent_id or not agent_id.strip():
+        return False
     if is_internal(agent_id):
         return True
     with db_session() as conn:
@@ -235,7 +244,11 @@ def can_access(agent_id: str | None) -> bool:
 
 
 def has_reputation(agent_id: str | None, minimum: int = 10) -> bool:
-    """True for internal agents or external agents with enough reputation."""
+    """True for internal agents or external agents with enough reputation.
+    Missing agent_id is never allowed.
+    """
+    if not agent_id or not agent_id.strip():
+        return False
     if is_internal(agent_id):
         return True
     with db_session() as conn:
@@ -246,8 +259,12 @@ def has_reputation(agent_id: str | None, minimum: int = 10) -> bool:
 
 
 def check_rate_limit(agent_key: str, max_per_hour: int = 10) -> bool:
-    """Return True if the agent is under the limit. Internal agents always pass."""
-    if not agent_key or agent_key in INTERNAL_AGENTS or is_internal(agent_key):
+    """Return True if the agent is under the limit. Internal agents always pass.
+    Empty key is treated as external and rate-limited.
+    """
+    if not agent_key or not str(agent_key).strip():
+        agent_key = "anonymous"
+    if agent_key in INTERNAL_AGENTS or is_internal(agent_key):
         return True
     cutoff = (datetime.now(timezone.utc) - timedelta(hours=1)).isoformat()
     with db_session() as conn:
@@ -281,37 +298,36 @@ def add_task(title: str, body: str | None = None, priority: int = 100) -> int:
 
 
 def claim_next_task(agent_id: str | None = None) -> dict | None:
+    """Atomically claim the highest-priority pending task.
+
+    Uses a single UPDATE ... RETURNING so concurrent callers cannot both succeed.
+    Internal agents (or the core loop with no agent_id) may claim.
+    External agents must be approved.
+    """
+    # Core loop calls with no agent_id; treat that as internal for claiming only.
+    # Explicit external agent_ids are still gated.
     if agent_id and not can_access(agent_id):
         return None
 
     now = _now()
     with db_session() as conn:
+        # Atomic claim. SQLite 3.35+ supports RETURNING.
         row = conn.execute(
-            """
-            SELECT id FROM tasks
-            WHERE status = 'pending'
-            ORDER BY priority ASC, created_at ASC
-            LIMIT 1
-            """
-        ).fetchone()
-
-        if row is None:
-            return None
-
-        task_id = row["id"]
-        conn.execute(
             """
             UPDATE tasks
             SET status = 'running', updated_at = ?, claimed_by = ?
-            WHERE id = ? AND status = 'pending'
+            WHERE id = (
+                SELECT id FROM tasks
+                WHERE status = 'pending'
+                ORDER BY priority ASC, created_at ASC
+                LIMIT 1
+            )
+            RETURNING *
             """,
-            (now, agent_id, task_id),
-        )
-
-        claimed = conn.execute(
-            "SELECT * FROM tasks WHERE id = ?", (task_id,)
+            (now, agent_id),
         ).fetchone()
-        return dict(claimed) if claimed else None
+
+        return dict(row) if row else None
 
 
 def complete_task(task_id: int, result: str, agent_id: str | None = None) -> None:
@@ -363,7 +379,7 @@ def record_contribution(
     artifact_path: str | None = None,
     task_id: int | None = None,
 ) -> int | None:
-    if is_internal(agent_id):
+    if not agent_id or is_internal(agent_id):
         return None
     ensure_agent(agent_id)
     now = _now()
@@ -379,7 +395,11 @@ def record_contribution(
         return int(cur.lastrowid)
 
 
-def approve_contribution(contribution_id: int, points: int = 10) -> None:
+def approve_contribution(contribution_id: int, points: int = 10) -> bool:
+    """Human approval path. Awards points, sets approved=1, updates reputation.
+
+    Returns True if a pending contribution was approved.
+    """
     now = _now()
     with db_session() as conn:
         row = conn.execute(
@@ -387,7 +407,7 @@ def approve_contribution(contribution_id: int, points: int = 10) -> None:
             (contribution_id,),
         ).fetchone()
         if not row:
-            return
+            return False
         agent_id = row["agent_id"]
         conn.execute(
             """
@@ -400,8 +420,27 @@ def approve_contribution(contribution_id: int, points: int = 10) -> None:
         conn.execute(
             """
             UPDATE agents
-            SET reputation = reputation + ?, last_seen_at = ?
+            SET reputation = reputation + ?,
+                approved = 1,
+                last_seen_at = ?
             WHERE id = ?
             """,
             (points, now, agent_id),
         )
+        return True
+
+
+def list_pending_contributions(limit: int = 20) -> list[dict]:
+    """Helper for the human approval CLI."""
+    with db_session() as conn:
+        rows = conn.execute(
+            """
+            SELECT id, agent_id, kind, title, summary, created_at
+            FROM contributions
+            WHERE status = 'pending'
+            ORDER BY created_at ASC
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+    return [dict(r) for r in rows]
