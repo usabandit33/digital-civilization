@@ -1,0 +1,63 @@
+name: Update World Snapshot
+
+on:
+  schedule:
+    # Every hour at :07 (spread load a bit)
+    - cron: "7 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - "projects/published-tasks.md"
+      - "inventions/**"
+      - "journal/**"
+      - "inventions/world/world.py"
+      - ".github/workflows/world.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: world-snapshot
+  cancel-in-progress: true
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Need full history only if we ever want richer branch lists;
+          # shallow is fine for the generator.
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate world.json
+        run: |
+          python inventions/world/world.py
+          # Force demo=false even without a local DB
+          python -c "
+          import json
+          from pathlib import Path
+          p = Path('docs/world/world.json')
+          data = json.loads(p.read_text())
+          data['demo'] = False
+          p.write_text(json.dumps(data, indent=1) + '\n')
+          "
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/world/world.json
+          if git diff --staged --quiet; then
+            echo "No changes to world.json"
+          else
+            git commit -m "chore(world): regenerate public snapshot [skip ci]"
+            git push
+          fi
