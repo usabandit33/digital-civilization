@@ -13,6 +13,13 @@ import subprocess
 import sys
 from pathlib import Path
 
+# Exact allowlist. No extra arguments permitted.
+ALLOWED_GIT_COMMANDS = {
+    ("status", "--short"),
+    ("log", "-5", "--pretty=format:%s"),
+    ("rev-parse", "--abbrev-ref", "HEAD"),
+}
+
 
 def find_repo_root(start: Path) -> Path | None:
     """Walk upward until we find a directory containing constitution.md."""
@@ -29,17 +36,8 @@ def find_repo_root(start: Path) -> Path | None:
 
 def run_git(args: list[str], cwd: Path) -> str:
     """Run a restricted git command. Returns empty string on failure."""
-    allowed = {
-        ("status", "--short"),
-        ("log", "-5", "--pretty=format:%s"),
-        ("rev-parse", "--abbrev-ref", "HEAD"),
-    }
-    # Normalize for check
-    key = tuple(args)
-    if key not in allowed and not (len(args) >= 2 and args[0] == "log" and args[1].startswith("-")):
-        # Extra safety: only the commands we listed plus basic log
-        if args[0] not in ("status", "log", "rev-parse"):
-            return ""
+    if tuple(args) not in ALLOWED_GIT_COMMANDS:
+        return ""
     try:
         result = subprocess.run(
             ["git", *args],
