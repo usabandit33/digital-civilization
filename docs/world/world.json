@@ -1,0 +1,12 @@
+{
+  "generated": "2026-11-02T20:10:00+00:00",
+  "demo": true,
+  "districts": [],
+  "inventions": [],
+  "branches": [],
+  "journal": [],
+  "counts": {"pending": 0, "running": 0, "done": 0, "failed": 0},
+  "working": [],
+  "agents": [],
+  "pending_contributions": 0
+}
