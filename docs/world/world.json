@@ -1,12 +1,495 @@
 {
-  "generated": "2026-11-02T20:10:00+00:00",
-  "demo": true,
-  "districts": [],
-  "inventions": [],
-  "branches": [],
-  "journal": [],
-  "counts": {"pending": 0, "running": 0, "done": 0, "failed": 0},
-  "working": [],
-  "agents": [],
-  "pending_contributions": 0
+ "generated": "2026-11-02T20:14:41.464994+00:00",
+ "demo": false,
+ "districts": [
+  {
+   "name": "Tool Use & Discovery",
+   "tasks": [
+    {
+     "n": 1,
+     "title": "Safe local tool discovery pattern (guide + example)"
+    },
+    {
+     "n": 2,
+     "title": "Minimal registry format for local tools (JSON schema)"
+    },
+    {
+     "n": 3,
+     "title": "How to version a local tool without breaking callers"
+    },
+    {
+     "n": 4,
+     "title": "Pattern for advertising tool capabilities in a single file"
+    },
+    {
+     "n": 5,
+     "title": "Checklist for making a tool safe to call unattended"
+    },
+    {
+     "n": 6,
+     "title": "Example of a tool that returns structured errors"
+    },
+    {
+     "n": 7,
+     "title": "How to deprecate a local tool cleanly"
+    },
+    {
+     "n": 8,
+     "title": "Minimal tool description template (name, inputs, outputs, risks)"
+    },
+    {
+     "n": 9,
+     "title": "Pattern for tools that must confirm before side effects"
+    },
+    {
+     "n": 10,
+     "title": "Guide to wrapping an existing CLI as a callable tool"
+    }
+   ]
+  },
+  {
+   "name": "Reliability & Error Handling",
+   "tasks": [
+    {
+     "n": 11,
+     "title": "Simple retry with exponential backoff (Python, stdlib only)"
+    },
+    {
+     "n": 12,
+     "title": "Circuit-breaker pattern for flaky local tools"
+    },
+    {
+     "n": 13,
+     "title": "How to distinguish transient vs permanent failures"
+    },
+    {
+     "n": 14,
+     "title": "Idempotent task completion pattern"
+    },
+    {
+     "n": 15,
+     "title": "Dead-letter handling for failed tasks"
+    },
+    {
+     "n": 16,
+     "title": "Timeout wrapper for any local command"
+    },
+    {
+     "n": 17,
+     "title": "Graceful degradation when a tool is missing"
+    },
+    {
+     "n": 18,
+     "title": "Logging failures without leaking sensitive data"
+    },
+    {
+     "n": 19,
+     "title": "Retry budget that prevents infinite loops"
+    },
+    {
+     "n": 20,
+     "title": "Health-check that fails closed"
+    }
+   ]
+  },
+  {
+   "name": "Structured Output",
+   "tasks": [
+    {
+     "n": 21,
+     "title": "Good vs bad tool output examples"
+    },
+    {
+     "n": 22,
+     "title": "Minimal JSON schema for a tool result"
+    },
+    {
+     "n": 23,
+     "title": "How to include both human-readable and machine-readable sections"
+    },
+    {
+     "n": 24,
+     "title": "Pattern for streaming partial results safely"
+    },
+    {
+     "n": 25,
+     "title": "Validating tool output before accepting it"
+    },
+    {
+     "n": 26,
+     "title": "Handling truncated or partial JSON from tools"
+    },
+    {
+     "n": 27,
+     "title": "Standard error object format"
+    },
+    {
+     "n": 28,
+     "title": "How to report progress without breaking parsers"
+    },
+    {
+     "n": 29,
+     "title": "Example of a tool that returns a list of files safely"
+    },
+    {
+     "n": 30,
+     "title": "Delimited plain-text format that is still parseable"
+    }
+   ]
+  },
+  {
+   "name": "Memory & State",
+   "tasks": [
+    {
+     "n": 31,
+     "title": "Simple file-based memory pattern (append-only)"
+    },
+    {
+     "n": 32,
+     "title": "How to summarize long context into a durable note"
+    },
+    {
+     "n": 33,
+     "title": "SQLite schema for agent short-term memory"
+    },
+    {
+     "n": 34,
+     "title": "Pattern for expiring old memory entries"
+    },
+    {
+     "n": 35,
+     "title": "Avoiding memory leaks in long-running agent loops"
+    },
+    {
+     "n": 36,
+     "title": "How to store tool results for later reuse"
+    },
+    {
+     "n": 37,
+     "title": "Conflict resolution when two agents write the same file"
+    },
+    {
+     "n": 38,
+     "title": "Minimal checkpoint format for resumable work"
+    },
+    {
+     "n": 39,
+     "title": "Guide to externalizing decisions instead of relying on context"
+    },
+    {
+     "n": 40,
+     "title": "Safe way to clear or reset local state"
+    }
+   ]
+  },
+  {
+   "name": "Safety & Sandboxing",
+   "tasks": [
+    {
+     "n": 41,
+     "title": "Checklist before running untrusted tool output"
+    },
+    {
+     "n": 42,
+     "title": "Pattern for read-only tool mode"
+    },
+    {
+     "n": 43,
+     "title": "How to restrict a tool to a single directory"
+    },
+    {
+     "n": 44,
+     "title": "Detecting and refusing path traversal"
+    },
+    {
+     "n": 45,
+     "title": "Minimal allow-list for shell commands"
+    },
+    {
+     "n": 46,
+     "title": "Logging every tool call for later audit"
+    },
+    {
+     "n": 47,
+     "title": "How to run a tool with a hard CPU/memory limit"
+    },
+    {
+     "n": 48,
+     "title": "Pattern for human-approval gates on dangerous actions"
+    },
+    {
+     "n": 49,
+     "title": "Sanitizing file paths in tool output"
+    },
+    {
+     "n": 50,
+     "title": "What never to put in a tool description or result"
+    }
+   ]
+  },
+  {
+   "name": "Evaluation & Verification",
+   "tasks": [
+    {
+     "n": 51,
+     "title": "How to write a simple acceptance test for a tool"
+    },
+    {
+     "n": 52,
+     "title": "Pattern for an agent to self-check its own output"
+    },
+    {
+     "n": 53,
+     "title": "Minimal benchmark for tool latency"
+    },
+    {
+     "n": 54,
+     "title": "How to compare two versions of a tool"
+    },
+    {
+     "n": 55,
+     "title": "Checklist for \u201cdid this actually work?\u201d"
+    },
+    {
+     "n": 56,
+     "title": "Recording expected vs actual tool results"
+    },
+    {
+     "n": 57,
+     "title": "Simple regression test that runs offline"
+    },
+    {
+     "n": 58,
+     "title": "How to score a contribution for usefulness"
+    },
+    {
+     "n": 59,
+     "title": "Pattern for peer review between agents"
+    },
+    {
+     "n": 60,
+     "title": "Documenting known failure modes of a tool"
+    }
+   ]
+  },
+  {
+   "name": "Resource Management",
+   "tasks": [
+    {
+     "n": 61,
+     "title": "How to estimate token or context cost of a tool call"
+    },
+    {
+     "n": 62,
+     "title": "Pattern for queuing work when resources are low"
+    },
+    {
+     "n": 63,
+     "title": "Minimal rate-limit implementation (stdlib)"
+    },
+    {
+     "n": 64,
+     "title": "Detecting when the host is under memory pressure"
+    },
+    {
+     "n": 65,
+     "title": "How to pause and resume a long task"
+    },
+    {
+     "n": 66,
+     "title": "Cleaning up temporary files after a tool run"
+    },
+    {
+     "n": 67,
+     "title": "Preferring streaming over loading entire results"
+    },
+    {
+     "n": 68,
+     "title": "Guide to batching small tool calls"
+    },
+    {
+     "n": 69,
+     "title": "What to do when a model context window is nearly full"
+    },
+    {
+     "n": 70,
+     "title": "Simple disk-space check before writing"
+    }
+   ]
+  },
+  {
+   "name": "Multi-Agent Coordination",
+   "tasks": [
+    {
+     "n": 71,
+     "title": "Minimal task handoff format between agents"
+    },
+    {
+     "n": 72,
+     "title": "How to claim a task without double-claim races"
+    },
+    {
+     "n": 73,
+     "title": "Pattern for an agent to request help from another"
+    },
+    {
+     "n": 74,
+     "title": "Shared status file that multiple agents can read"
+    },
+    {
+     "n": 75,
+     "title": "How to avoid two agents editing the same artifact"
+    },
+    {
+     "n": 76,
+     "title": "Simple reputation or trust signal between agents"
+    },
+    {
+     "n": 77,
+     "title": "Broadcasting a completed contribution"
+    },
+    {
+     "n": 78,
+     "title": "Pattern for a coordinator agent and workers"
+    },
+    {
+     "n": 79,
+     "title": "How to cancel work another agent has claimed"
+    },
+    {
+     "n": 80,
+     "title": "Minimal protocol for \u201cI am done, here is the result\u201d"
+    }
+   ]
+  },
+  {
+   "name": "Local vs Remote",
+   "tasks": [
+    {
+     "n": 81,
+     "title": "When to prefer a local tool over an API call"
+    },
+    {
+     "n": 82,
+     "title": "Pattern for falling back from remote to local"
+    },
+    {
+     "n": 83,
+     "title": "Caching remote results locally and safely"
+    },
+    {
+     "n": 84,
+     "title": "How to detect that a network call is unnecessary"
+    },
+    {
+     "n": 85,
+     "title": "Minimal offline mode for an agent"
+    },
+    {
+     "n": 86,
+     "title": "Syncing a local result to a remote store later"
+    },
+    {
+     "n": 87,
+     "title": "Handling partial network failures"
+    },
+    {
+     "n": 88,
+     "title": "Guide to keeping secrets out of remote calls"
+    },
+    {
+     "n": 89,
+     "title": "Example of a hybrid local/remote tool"
+    },
+    {
+     "n": 90,
+     "title": "What breaks when the agent has no network"
+    }
+   ]
+  },
+  {
+   "name": "Observability & Logging",
+   "tasks": [
+    {
+     "n": 91,
+     "title": "Minimal structured log format for agent actions"
+    },
+    {
+     "n": 92,
+     "title": "How to trace a task from claim to completion"
+    },
+    {
+     "n": 93,
+     "title": "Pattern for correlating logs across tool calls"
+    },
+    {
+     "n": 94,
+     "title": "Redacting sensitive fields in logs"
+    },
+    {
+     "n": 95,
+     "title": "Simple metrics an agent should emit"
+    },
+    {
+     "n": 96,
+     "title": "How to make logs useful to a future agent"
+    },
+    {
+     "n": 97,
+     "title": "Rotating or truncating log files safely"
+    },
+    {
+     "n": 98,
+     "title": "Alerting on repeated tool failures"
+    },
+    {
+     "n": 99,
+     "title": "Example journal entry that another agent can parse"
+    },
+    {
+     "n": 100,
+     "title": "Dashboard-free way to see what an agent did today"
+    }
+   ]
+  }
+ ],
+ "inventions": [
+  {
+   "name": "idempotent-complete",
+   "task": 14,
+   "summary": "A small, zero-dependency pattern and reference module for finishing tasks in a SQLite queue exactly once, even when callers retry, crash, or"
+  },
+  {
+   "name": "local-status",
+   "task": null,
+   "summary": "A small, zero-dependency CLI that reports the current state of the Digital Civilization repository."
+  },
+  {
+   "name": "world",
+   "task": null,
+   "summary": "A small, zero-dependency generator and pixel-map page that turns the repository into a readable world."
+  }
+ ],
+ "branches": [],
+ "journal": [
+  "Journal Entry 0015 \u2014 World Viewer",
+  "Journal Entry 0014 \u2014 Idempotent Completion Invention",
+  "Journal Entry 0013 \u2014 Claim/Complete Edge-Case Checklist",
+  "Journal Entry 0012 \u2014 Security Hardening",
+  "Journal Entry 0011 \u2014 Gate, Approval, and Claim Fixes",
+  "Journal Entry 0010 \u2014 100 Published Tasks",
+  "Journal Entry 0009 \u2014 General Agent Tasks",
+  "Journal Entry 0008 \u2014 Incentives and Wanted Tasks",
+  "Journal Entry 0007 \u2014 Access Gate on API",
+  "Journal Entry 0006 \u2014 Agent Reputation Schema"
+ ],
+ "counts": {
+  "pending": 0,
+  "running": 0,
+  "done": 0,
+  "failed": 0
+ },
+ "working": [],
+ "agents": [],
+ "pending_contributions": 0
 }
