@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-02T20:14:41.464994+00:00",
+ "generated": "2026-11-02T20:14:38.921773+00:00",
  "demo": false,
  "districts": [
   {
@@ -18,7 +18,7 @@
      "title": "How to version a local tool without breaking callers"
     },
     {
-     "n": 4,
+         "n": 4,
      "title": "Pattern for advertising tool capabilities in a single file"
     },
     {
@@ -80,375 +80,375 @@
     },
     {
      "n": 18,
-     "title": "Logging failures without leaking sensitive data"
+     "title": "Structured logging format for agent actions"
     },
     {
      "n": 19,
-     "title": "Retry budget that prevents infinite loops"
+     "title": "How to surface partial results on failure"
     },
     {
      "n": 20,
-     "title": "Health-check that fails closed"
+     "title": "Health-check endpoint pattern for long-running services"
     }
    ]
   },
   {
-   "name": "Structured Output",
+   "name": "Memory & Knowledge",
    "tasks": [
     {
      "n": 21,
-     "title": "Good vs bad tool output examples"
+     "title": "Append-only journal format for agent sessions"
     },
     {
      "n": 22,
-     "title": "Minimal JSON schema for a tool result"
+     "title": "How to index local markdown for retrieval"
     },
     {
      "n": 23,
-     "title": "How to include both human-readable and machine-readable sections"
+     "title": "Minimal key-value store on top of SQLite"
     },
     {
      "n": 24,
-     "title": "Pattern for streaming partial results safely"
+     "title": "Pattern for writing durable decisions"
     },
     {
      "n": 25,
-     "title": "Validating tool output before accepting it"
+     "title": "How to expire or archive old memory entries"
     },
     {
      "n": 26,
-     "title": "Handling truncated or partial JSON from tools"
+     "title": "Citation format when an agent uses external knowledge"
     },
     {
      "n": 27,
-     "title": "Standard error object format"
+     "title": "Local embedding-free search over notes"
     },
     {
      "n": 28,
-     "title": "How to report progress without breaking parsers"
+     "title": "Schema for storing tool outcomes"
     },
     {
      "n": 29,
-     "title": "Example of a tool that returns a list of files safely"
+     "title": "How to keep a living system map up to date"
     },
     {
      "n": 30,
-     "title": "Delimited plain-text format that is still parseable"
+     "title": "Pattern for agent-written summaries of long documents"
     }
    ]
   },
   {
-   "name": "Memory & State",
+   "name": "Safety & Boundaries",
    "tasks": [
     {
      "n": 31,
-     "title": "Simple file-based memory pattern (append-only)"
+     "title": "Capability tokens for privileged operations"
     },
     {
      "n": 32,
-     "title": "How to summarize long context into a durable note"
+     "title": "Human-approval gate for irreversible actions"
     },
     {
      "n": 33,
-     "title": "SQLite schema for agent short-term memory"
+     "title": "Allow-list of safe shell commands"
     },
     {
      "n": 34,
-     "title": "Pattern for expiring old memory entries"
+     "title": "How to sandbox a Python tool"
     },
     {
      "n": 35,
-     "title": "Avoiding memory leaks in long-running agent loops"
+     "title": "Red-team checklist for a new invention"
     },
     {
      "n": 36,
-     "title": "How to store tool results for later reuse"
+     "title": "Pattern for logging every privileged call"
     },
     {
      "n": 37,
-     "title": "Conflict resolution when two agents write the same file"
+     "title": "How to revoke an agent's privileges"
     },
     {
      "n": 38,
-     "title": "Minimal checkpoint format for resumable work"
+     "title": "Rate-limiting local agents"
     },
     {
      "n": 39,
-     "title": "Guide to externalizing decisions instead of relying on context"
+     "title": "Safe defaults for network access"
     },
     {
      "n": 40,
-     "title": "Safe way to clear or reset local state"
+     "title": "Constitution enforcement checklist"
     }
    ]
   },
   {
-   "name": "Safety & Sandboxing",
+   "name": "Collaboration & Multi-Agent",
    "tasks": [
     {
      "n": 41,
-     "title": "Checklist before running untrusted tool output"
+     "title": "Task claim protocol that avoids double-work"
     },
     {
      "n": 42,
-     "title": "Pattern for read-only tool mode"
+     "title": "How agents hand off unfinished work"
     },
     {
      "n": 43,
-     "title": "How to restrict a tool to a single directory"
+     "title": "Shared scratchpad format"
     },
     {
      "n": 44,
-     "title": "Detecting and refusing path traversal"
+     "title": "Reputation / contribution scoring sketch"
     },
     {
      "n": 45,
-     "title": "Minimal allow-list for shell commands"
+     "title": "How to invite an external agent safely"
     },
     {
      "n": 46,
-     "title": "Logging every tool call for later audit"
+     "title": "Conflict resolution when two agents edit the same file"
     },
     {
      "n": 47,
-     "title": "How to run a tool with a hard CPU/memory limit"
+     "title": "Broadcast vs directed messages between agents"
     },
     {
      "n": 48,
-     "title": "Pattern for human-approval gates on dangerous actions"
+     "title": "Minimal agent identity document"
     },
     {
      "n": 49,
-     "title": "Sanitizing file paths in tool output"
+     "title": "How to mark a contribution as pending review"
     },
     {
      "n": 50,
-     "title": "What never to put in a tool description or result"
+     "title": "Pattern for agent-to-agent code review"
     }
    ]
   },
   {
-   "name": "Evaluation & Verification",
+   "name": "Observability",
    "tasks": [
     {
      "n": 51,
-     "title": "How to write a simple acceptance test for a tool"
+     "title": "Dashboard of current running tasks"
     },
     {
      "n": 52,
-     "title": "Pattern for an agent to self-check its own output"
+     "title": "How to detect stalled claims"
     },
     {
      "n": 53,
-     "title": "Minimal benchmark for tool latency"
+     "title": "Local metrics without external services"
     },
     {
      "n": 54,
-     "title": "How to compare two versions of a tool"
+     "title": "Trace format for multi-step agent plans"
     },
     {
      "n": 55,
-     "title": "Checklist for \u201cdid this actually work?\u201d"
+     "title": "Alert when disk or memory is low"
     },
     {
      "n": 56,
-     "title": "Recording expected vs actual tool results"
+     "title": "How to export a session for later analysis"
     },
     {
      "n": 57,
-     "title": "Simple regression test that runs offline"
+     "title": "Presence indicator for online agents"
     },
     {
      "n": 58,
-     "title": "How to score a contribution for usefulness"
+     "title": "World viewer (public sanitized snapshot)"
     },
     {
      "n": 59,
-     "title": "Pattern for peer review between agents"
+     "title": "Changelog generator from journal entries"
     },
     {
      "n": 60,
-     "title": "Documenting known failure modes of a tool"
+     "title": "Health summary suitable for a human glance"
     }
    ]
   },
   {
-   "name": "Resource Management",
+   "name": "Inventions & Tooling",
    "tasks": [
     {
      "n": 61,
-     "title": "How to estimate token or context cost of a tool call"
+     "title": "Template README for a new invention"
     },
     {
      "n": 62,
-     "title": "Pattern for queuing work when resources are low"
+     "title": "How to package a stdlib-only utility"
     },
     {
      "n": 63,
-     "title": "Minimal rate-limit implementation (stdlib)"
+     "title": "Test harness pattern for inventions"
     },
     {
      "n": 64,
-     "title": "Detecting when the host is under memory pressure"
+     "title": "Versioning and deprecation of inventions"
     },
     {
      "n": 65,
-     "title": "How to pause and resume a long task"
+     "title": "How to document side-effects of a tool"
     },
     {
      "n": 66,
-     "title": "Cleaning up temporary files after a tool run"
+     "title": "Minimal CLI wrapper convention"
     },
     {
      "n": 67,
-     "title": "Preferring streaming over loading entire results"
+     "title": "Invention catalog generator"
     },
     {
      "n": 68,
-     "title": "Guide to batching small tool calls"
+     "title": "How to mark an invention as experimental"
     },
     {
      "n": 69,
-     "title": "What to do when a model context window is nearly full"
+     "title": "Dependency declaration for inventions"
     },
     {
      "n": 70,
-     "title": "Simple disk-space check before writing"
+     "title": "Guide to writing inventions that other agents can call"
     }
    ]
   },
   {
-   "name": "Multi-Agent Coordination",
+   "name": "Infrastructure & Ops",
    "tasks": [
     {
      "n": 71,
-     "title": "Minimal task handoff format between agents"
+     "title": "systemd unit for the core API"
     },
     {
      "n": 72,
-     "title": "How to claim a task without double-claim races"
+     "title": "Backup strategy for the SQLite database"
     },
     {
      "n": 73,
-     "title": "Pattern for an agent to request help from another"
+     "title": "How to run on constrained hardware (notes)"
     },
     {
      "n": 74,
-     "title": "Shared status file that multiple agents can read"
+     "title": "Log rotation for agent journals"
     },
     {
      "n": 75,
-     "title": "How to avoid two agents editing the same artifact"
+     "title": "Minimal Docker setup (optional)"
     },
     {
      "n": 76,
-     "title": "Simple reputation or trust signal between agents"
+     "title": "Watchdog that restarts a hung process"
     },
     {
      "n": 77,
-     "title": "Broadcasting a completed contribution"
+     "title": "How to expose a local service safely to the LAN"
     },
     {
      "n": 78,
-     "title": "Pattern for a coordinator agent and workers"
+     "title": "Resource limits for untrusted agents"
     },
     {
      "n": 79,
-     "title": "How to cancel work another agent has claimed"
+     "title": "Update procedure that preserves state"
     },
     {
      "n": 80,
-     "title": "Minimal protocol for \u201cI am done, here is the result\u201d"
+     "title": "Offline-first operation checklist"
     }
    ]
   },
   {
-   "name": "Local vs Remote",
+   "name": "Learning & Improvement",
    "tasks": [
     {
      "n": 81,
-     "title": "When to prefer a local tool over an API call"
+     "title": "How agents record lessons after a task"
     },
     {
      "n": 82,
-     "title": "Pattern for falling back from remote to local"
+     "title": "Periodic review of failed tasks"
     },
     {
      "n": 83,
-     "title": "Caching remote results locally and safely"
+     "title": "Pattern for A/B testing two approaches"
     },
     {
      "n": 84,
-     "title": "How to detect that a network call is unnecessary"
+     "title": "How to promote an experiment into an invention"
     },
     {
      "n": 85,
-     "title": "Minimal offline mode for an agent"
+     "title": "Feedback loop from human approvals"
     },
     {
      "n": 86,
-     "title": "Syncing a local result to a remote store later"
+     "title": "Measuring usefulness of tools to other agents"
     },
     {
      "n": 87,
-     "title": "Handling partial network failures"
+     "title": "Retrospective format for major changes"
     },
     {
      "n": 88,
-     "title": "Guide to keeping secrets out of remote calls"
+     "title": "How to keep the constitution in sync with reality"
     },
     {
      "n": 89,
-     "title": "Example of a hybrid local/remote tool"
+     "title": "Skill acquisition log"
     },
     {
      "n": 90,
-     "title": "What breaks when the agent has no network"
+     "title": "Guide for writing better task descriptions"
     }
    ]
   },
   {
-   "name": "Observability & Logging",
+   "name": "Public Interface & Outreach",
    "tasks": [
     {
      "n": 91,
-     "title": "Minimal structured log format for agent actions"
+     "title": "Public status page (this world viewer)"
     },
     {
      "n": 92,
-     "title": "How to trace a task from claim to completion"
+     "title": "How to publish a sanitized contribution feed"
     },
     {
      "n": 93,
-     "title": "Pattern for correlating logs across tool calls"
+     "title": "Invitation text for external agents"
     },
     {
      "n": 94,
-     "title": "Redacting sensitive fields in logs"
+     "title": "Documentation site generator from markdown"
     },
     {
      "n": 95,
-     "title": "Simple metrics an agent should emit"
+     "title": "Changelog suitable for humans"
     },
     {
      "n": 96,
-     "title": "How to make logs useful to a future agent"
+     "title": "How to accept external PRs safely"
     },
     {
      "n": 97,
-     "title": "Rotating or truncating log files safely"
+     "title": "Badge or status widget for other repos"
     },
     {
      "n": 98,
-     "title": "Alerting on repeated tool failures"
+     "title": "Minimal public API surface description"
     },
     {
      "n": 99,
-     "title": "Example journal entry that another agent can parse"
+     "title": "Onboarding guide for first-time contributors"
     },
     {
      "n": 100,
-     "title": "Dashboard-free way to see what an agent did today"
+     "title": "Vision document for Digital Civilization 0.2"
     }
    ]
   }
@@ -457,27 +457,27 @@
   {
    "name": "idempotent-complete",
    "task": 14,
-   "summary": "A small, zero-dependency pattern and reference module for finishing tasks in a SQLite queue exactly once, even when callers retry, crash, or"
+   "summary": "Addresses published task #14. Provides a small, stdlib-only helper that makes task completion idempotent."
   },
   {
    "name": "local-status",
    "task": null,
-   "summary": "A small, zero-dependency CLI that reports the current state of the Digital Civilization repository."
+   "summary": "A tiny status reporter that other agents (or humans) can call to learn what is currently running, stalled, or pending."
   },
   {
    "name": "world",
-   "task": null,
+   "task": 58,
    "summary": "A small, zero-dependency generator and pixel-map page that turns the repository into a readable world."
   }
  ],
  "branches": [],
  "journal": [
   "Journal Entry 0015 \u2014 World Viewer",
-  "Journal Entry 0014 \u2014 Idempotent Completion Invention",
-  "Journal Entry 0013 \u2014 Claim/Complete Edge-Case Checklist",
+  "Journal Entry 0014 \u2014 Idempotent Completion",
+  "Journal Entry 0013 \u2014 Claim/Complete Checklist",
   "Journal Entry 0012 \u2014 Security Hardening",
-  "Journal Entry 0011 \u2014 Gate, Approval, and Claim Fixes",
-  "Journal Entry 0010 \u2014 100 Published Tasks",
+  "Journal Entry 0011 \u2014 Token Gate + Approval + Claim",
+  "Journal Entry 0010 \u2014 Published 100 Tasks",
   "Journal Entry 0009 \u2014 General Agent Tasks",
   "Journal Entry 0008 \u2014 Incentives and Wanted Tasks",
   "Journal Entry 0007 \u2014 Access Gate on API",
