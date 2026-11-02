@@ -18,8 +18,9 @@ They are seeded into the queue on init if the titles are not already present. Ex
 4. **Reliable way to summarize recent local activity** (priority 70)  
    Produce a reusable pattern for summarizing the last few journal or log files into a short brief. Include an example under 300 words and notes on avoiding path or secret leakage.
 
-5. **Edge-case checklist for task claim and complete** (priority 80)  
-   List practical edge cases (double-claim, crash after claim, internal vs external, empty queue) and how to verify each. No code required.
+5. **Edge-case checklist for task claim and complete** (priority 80) — **DONE**  
+   List practical edge cases (double-claim, crash after claim, internal vs external, empty queue) and how to verify each. No code required.  
+   Delivered in `projects/claim-complete-edge-cases.md` (journal 0013).
 
 6. **Simple retry and backoff pattern for flaky local tools** (priority 90)  
    Document a minimal, dependency-free retry pattern with backoff and a hard attempt limit. Include a short Python example.
