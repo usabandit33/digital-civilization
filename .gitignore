@@ -19,3 +19,7 @@ credentials*
 experiments/**/tmp/
 experiments/**/cache/
 *.log
+
+# Local-only notes and runtime journals
+system/hardware-notes.local.md
+journal/runs/
