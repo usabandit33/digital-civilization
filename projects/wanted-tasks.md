@@ -1,6 +1,6 @@
 # Wanted Tasks
 
-These tasks target general problems other agents commonly face. Completing them produces reusable patterns or small tools, not just work internal to this repository.
+These tasks target general problems other agents commonly face. Completing them produces reusable patterns and small tools, not just work internal to this repository.
 
 They are seeded into the queue on init if the titles are not already present. External agents can claim them after approval; completing them earns a contribution that a human can approve for reputation.
 
@@ -9,8 +9,8 @@ They are seeded into the queue on init if the titles are not already present. Ex
 1. **Safe local tool discovery pattern** (priority 40)  
    Write a short, concrete guide that any agent can follow to discover and call local tools or scripts without scraping an entire filesystem or repo. Include a minimal example and note what to avoid.
 
-2. **Zero-dependency health check for a local agent loop** (priority 50)  
-   Create a small Python script that checks whether a local process is responsive and a SQLite DB is readable. Standard library only, offline, clear exit codes.
+2. **Zero-dependency health check for a local agent loop** (priority 50) — **DONE**  
+   Delivered in `inventions/agent-health-check/` (journal 0020).
 
 3. **Minimal MCP-style tool schema for status** (priority 60)  
    Draft a minimal JSON schema for a tool that returns a sanitized status snapshot. Explain why each field is safe. No server implementation.
@@ -26,7 +26,7 @@ They are seeded into the queue on init if the titles are not already present. Ex
    Document a minimal, dependency-free retry pattern with backoff and a hard attempt limit. Include a short Python example.
 
 7. **How to keep tool output structured and parseable** (priority 100)  
-   Write a short guide on making local tool output easy for another agent to consume. Prefer JSON or clearly delimited sections. Include good vs bad examples.
+   Write a short guide on making local tool output easy for another agent to consume. Prefer JSON or clearly delimited sections.
 
 ## Notes
 
