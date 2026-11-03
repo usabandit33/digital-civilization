@@ -4,30 +4,26 @@
 <title>Digital Civilization</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:#0e1624;color:#d8e4f0;font:14px/1.4 system-ui,sans-serif;overflow:hidden}
-#wrap{position:relative;width:100%;height:100%}
+html,body{margin:0;height:100%;background:#0a1018;color:#d8e4f0;font:14px/1.4 system-ui,sans-serif;overflow:hidden}
 canvas{display:block;width:100%;height:100%;cursor:grab}
 canvas.drag{cursor:grabbing}
 #hud{position:absolute;left:12px;top:12px;pointer-events:none}
-h1{font-size:16px;margin:0;font-weight:600;letter-spacing:.2px}
-.sub{font-size:11px;color:#8aa0b8;margin-top:2px}
-#bar{position:absolute;left:12px;bottom:12px;font:11px ui-monospace,monospace;color:#8aa0b8;pointer-events:none}
-#tip{position:absolute;right:12px;top:12px;max-width:280px;background:#121a28cc;padding:8px 10px;border-radius:6px;font:12px ui-monospace,monospace;pointer-events:none;opacity:0;transition:opacity .15s}
+h1{font-size:16px;margin:0;font-weight:600}
+.sub{font-size:11px;color:#7a90a8;margin-top:2px}
+#bar{position:absolute;left:12px;bottom:12px;font:11px ui-monospace,monospace;color:#7a90a8;pointer-events:none}
+#tip{position:absolute;pointer-events:none;background:#121a28ee;padding:6px 10px;border-radius:4px;font:12px ui-monospace,monospace;opacity:0;transition:opacity .1s}
 #tip.on{opacity:1}
 </style></head><body>
-<div id="wrap">
 <canvas id="c"></canvas>
-<div id="hud"><h1>Digital Civilization</h1><div class="sub">Drag to pan · scroll to zoom · hover for details</div></div>
+<div id="hud"><h1>Digital Civilization</h1><div class="sub">Drag to orbit · scroll to zoom</div></div>
 <div id="bar"></div>
 <div id="tip"></div>
-</div>
 <script>
 "use strict";
 const cv=document.getElementById('c'), g=cv.getContext('2d');
 const tip=document.getElementById('tip'), bar=document.getElementById('bar');
 let W=null, t=0, hot=[];
-let cam={x:0,y:0,z:1};
-let drag=null;
+let yaw=0.4, pitch=0.55, dist=420, drag=null;
 
 function resize(){
   const d=Math.min(devicePixelRatio||1,2);
@@ -36,93 +32,109 @@ function resize(){
 }
 addEventListener('resize',resize); resize();
 
-function iso(x,y,h){
-  const s=cam.z;
-  const ix=(x-y)*s + cam.x + innerWidth/2;
-  const iy=(x+y)*0.5*s - h*s + cam.y + innerHeight/2;
-  return [ix,iy];
+function project(x,y,z){
+  const cy=Math.cos(yaw), sy=Math.sin(yaw);
+  const cp=Math.cos(pitch), sp=Math.sin(pitch);
+  let x1=x*cy - z*sy;
+  let z1=x*sy + z*cy;
+  let y1=y*cp - z1*sp;
+  z1=y*sp + z1*cp;
+  const f=dist/(dist+z1);
+  return [innerWidth/2 + x1*f, innerHeight/2 + y1*f, f];
 }
-function box(x,y,w,h,z,col,roof){
-  const [ix,iy]=iso(x,y,z);
-  const sw=w*cam.z, sh=h*cam.z*0.5;
-  g.fillStyle=roof||'#5a4030';
+
+function box(x,y,z,w,h,d,col,roof){
+  const faces=[
+    [[x-w,y,z-d],[x+w,y,z-d],[x+w,y-h,z-d],[x-w,y-h,z-d]], // front
+    [[x-w,y,z+d],[x+w,y,z+d],[x+w,y-h,z+d],[x-w,y-h,z+d]],
+    [[x-w,y-h,z-d],[x+w,y-h,z-d],[x+w,y-h,z+d],[x-w,y-h,z+d]], // top
+  ];
+  const cols=[col,col,roof||'#5a4030'];
+  faces.forEach((f,i)=>{
+    const pts=f.map(p=>project(p[0],p[1],p[2]));
+    g.fillStyle=cols[i];
+    g.beginPath();
+    g.moveTo(pts[0][0],pts[0][1]);
+    pts.slice(1).forEach(p=>g.lineTo(p[0],p[1]));
+    g.fill();
+  });
+  const [cx,cy]=project(x,y-h,z);
+  return {x:cx-8,y:cy-8,w:16,h:16};
+}
+
+function island(cx,cy,r){
+  const steps=16;
+  g.fillStyle='#1a3a28';
   g.beginPath();
-  g.moveTo(ix,iy-sh*0.6);
-  g.lineTo(ix+sw,iy);
-  g.lineTo(ix,iy+sh*0.6);
-  g.lineTo(ix-sw,iy);
+  for(let i=0;i<=steps;i++){
+    const a=i/steps*6.28;
+    const [ix,iy]=project(cx+Math.cos(a)*r, cy+2, Math.sin(a)*r);
+    i?g.lineTo(ix,iy):g.moveTo(ix,iy);
+  }
   g.fill();
-  g.fillStyle=col;
-  g.fillRect(ix-sw*0.5,iy,sw,sh*1.2);
-  return {x:ix-sw*0.5,y:iy-sh*0.6,w:sw,h:sh*1.8};
+  g.fillStyle='#245030';
+  g.beginPath();
+  for(let i=0;i<=steps;i++){
+    const a=i/steps*6.28;
+    const [ix,iy]=project(cx+Math.cos(a)*r*0.85, cy, Math.sin(a)*r*0.85);
+    i?g.lineTo(ix,iy):g.moveTo(ix,iy);
+  }
+  g.fill();
 }
 
 function draw(){
   const w=innerWidth, h=innerHeight;
   g.clearRect(0,0,w,h);
-  // sky gradient
   const sky=g.createLinearGradient(0,0,0,h);
-  sky.addColorStop(0,'#0c1522'); sky.addColorStop(1,'#152033');
+  sky.addColorStop(0,'#0a1018'); sky.addColorStop(1,'#121c2a');
   g.fillStyle=sky; g.fillRect(0,0,w,h);
 
-  if(!W){g.fillStyle='#8aa0b8';g.font='14px system-ui';g.fillText('loading…',w/2-30,h/2);return}
+  if(!W){g.fillStyle='#7a90a8';g.font='14px system-ui';g.fillText('loading…',w/2-30,h/2);return}
   hot=[];
 
-  // ground islands for districts
   const built={};
   (W.inventions||[]).forEach(i=>{if(i.task)built[i.task]=i});
   const dists=(W.districts||[]).slice(0,10);
+
+  // islands
   dists.forEach((d,i)=>{
-    const ang=i/dists.length*Math.PI*2;
-    const r=180;
-    const cx=Math.cos(ang)*r, cy=Math.sin(ang)*r;
-    // island base
-    const [ix,iy]=iso(cx,cy,0);
-    g.fillStyle='#1e3a2a';
-    g.beginPath(); g.ellipse(ix,iy,90*cam.z,36*cam.z,0,0,6.28); g.fill();
-    g.fillStyle='#2a4a34';
-    g.beginPath(); g.ellipse(ix,iy-4*cam.z,70*cam.z,28*cam.z,0,0,6.28); g.fill();
-    // buildings on island
+    const a=i/dists.length*6.28;
+    const r=220;
+    const cx=Math.cos(a)*r, cz=Math.sin(a)*r;
+    island(cx,0,cz);
     (d.tasks||[]).slice(0,6).forEach((tk,k)=>{
-      const ox=cx+(k%3-1)*22, oy=cy+((k/3)|0-0.5)*18;
+      const ox=cx+(k%3-1)*18, oz=cz+((k/3)|0-0.5)*16;
       const col=built[tk.n]?'#4aa3ff':'#6a5538';
       const roof=built[tk.n]?'#2a5a8a':'#4a3c28';
-      const hit=box(ox,oy,8,6,built[tk.n]?10:4,col,roof);
+      const hit=box(ox,0,oz,6,built[tk.n]?14:6,5,col,roof);
       hot.push({...hit,s:'#'+tk.n+' '+tk.title+(built[tk.n]?'  [built]':'')});
     });
-    // label
+    const [lx,ly]=project(cx,8,cz);
     g.fillStyle='#e8f0f8'; g.font='11px system-ui';
-    g.fillText(d.name.slice(0,16),ix-40,iy+50*cam.z);
+    g.fillText(d.name.slice(0,14),lx-30,ly+30);
   });
 
-  // central charter hall
-  const ch=box(0,0,16,12,18,'#9aa8c0','#6a4a3a');
+  // center
+  island(0,0,0);
+  const ch=box(0,0,0,14,20,10,'#9aa8c0','#6a4a3a');
   hot.push({...ch,s:'Charter Hall'});
+  const [cx,cy]=project(0,22,0);
   g.fillStyle='#fff'; g.font='12px system-ui';
-  const [cx,cy]=iso(0,0,22);
-  g.fillText('Charter',cx-22,cy-8);
+  g.fillText('Charter',cx-22,cy-6);
 
-  // chronicle & approval as side islands
-  const cr=box(-220,40,12,8,8,'#c4a070','#7a3b2e');
-  hot.push({...cr,s:'Chronicle · '+(W.journal||[]).length});
-  const ap=box(220,40,12,8,8,'#8a6aa8','#4a3a5a');
-  hot.push({...ap,s:'Approval · '+(W.pending_contributions||0)+' pending'});
-
-  // agents as little figures on the central island
-  const busy={};
+  // agents
   (W.working||[]).forEach((k,i)=>{
-    busy[k.agent]=1;
-    const ang=t/40+i;
-    const x=Math.cos(ang)*30, y=Math.sin(ang)*30;
-    const [ix,iy]=iso(x,y,6);
+    const a=t/30+i*0.8;
+    const x=Math.cos(a)*40, z=Math.sin(a)*40;
+    const [ix,iy]=project(x,4,z);
     g.fillStyle=k.stalled?'#666':'#f0c8a0';
-    g.beginPath(); g.arc(ix,iy,4*cam.z,0,6.28); g.fill();
+    g.beginPath(); g.arc(ix,iy,5,0,6.28); g.fill();
     hot.push({x:ix-6,y:iy-6,w:12,h:12,s:k.agent+' #'+k.task});
   });
 
-  // soft vignette
-  const vig=g.createRadialGradient(w/2,h/2,h*0.3,w/2,h/2,h*0.8);
-  vig.addColorStop(0,'transparent'); vig.addColorStop(1,'#0e162488');
+  // vignette
+  const vig=g.createRadialGradient(w/2,h/2,h*0.25,w/2,h/2,h*0.75);
+  vig.addColorStop(0,'transparent'); vig.addColorStop(1,'#0a101888');
   g.fillStyle=vig; g.fillRect(0,0,w,h);
 }
 
@@ -139,12 +151,12 @@ async function poll(){
   }catch(e){bar.textContent='no world.json'}
 }
 
-cv.onmousedown=e=>{drag={x:e.clientX,y:e.clientY,cx:cam.x,cy:cam.y};cv.classList.add('drag')};
+cv.onmousedown=e=>{drag={x:e.clientX,y:e.clientY,yaw,pitch};cv.classList.add('drag')};
 addEventListener('mouseup',()=>{drag=null;cv.classList.remove('drag')});
 addEventListener('mousemove',e=>{
   if(drag){
-    cam.x=drag.cx+(e.clientX-drag.x);
-    cam.y=drag.cy+(e.clientY-drag.y);
+    yaw=drag.yaw+(e.clientX-drag.x)*0.008;
+    pitch=Math.max(0.2,Math.min(1.2,drag.pitch+(e.clientY-drag.y)*0.006));
   }
   const b=cv.getBoundingClientRect();
   const x=e.clientX-b.left, y=e.clientY-b.top;
@@ -152,8 +164,8 @@ addEventListener('mousemove',e=>{
   if(h){tip.textContent=h.s;tip.classList.add('on');tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY+12)+'px'}
   else tip.classList.remove('on');
 });
-cv.onwheel=e=>{e.preventDefault();cam.z=Math.max(0.4,Math.min(2.5,cam.z*(e.deltaY>0?0.92:1.08)))};
+cv.onwheel=e=>{e.preventDefault();dist=Math.max(180,Math.min(800,dist+(e.deltaY>0?30:-30)))};
 
-setInterval(()=>{t++;draw()},50);
+setInterval(()=>{t++;draw()},40);
 poll(); setInterval(poll,8000);
 </script></body></html>
