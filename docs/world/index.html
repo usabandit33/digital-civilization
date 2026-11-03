@@ -3,66 +3,230 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Digital Civilization: World</title>
 <style>
-:root{--bg:#14161c;--fg:#d8dce6;--mut:#8a90a0}
-@media (prefers-color-scheme:light){:root{--bg:#eef0f4;--fg:#1a1d24;--mut:#5a6070}}
-body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.4 system-ui,sans-serif}
-main{max-width:1000px;margin:0 auto;padding:12px}
-h1{font-size:18px;margin:4px 0}
-canvas{width:100%;image-rendering:pixelated;background:#2f4a2c;border:2px solid #000;display:block}
-#bar,#tip{font:12px monospace;color:var(--mut);min-height:16px;margin:6px 0}
-#warn{background:#7a3b2e;color:#fff;padding:4px 8px;display:none}
-ul{padding-left:18px;margin:4px 0}
+:root{--bg:#0e1116;--fg:#e8eaf0;--mut:#9aa3b5;--panel:#1a1f28}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:16px}
+h1{font-size:20px;margin:0 0 4px;font-weight:600;letter-spacing:.3px}
+.sub{color:var(--mut);font-size:12px;margin-bottom:10px}
+canvas{width:100%;image-rendering:pixelated;background:#1e3a24;border:3px solid #0a0c10;border-radius:4px;display:block;box-shadow:0 4px 24px #0008}
+#bar{font:12px/1.4 ui-monospace,monospace;color:var(--mut);margin:8px 0 4px}
+#tip{font:12px ui-monospace,monospace;color:#c8d0dc;min-height:18px;background:var(--panel);padding:6px 10px;border-radius:4px;margin:6px 0}
+#warn{background:#7a3b2e;color:#fff;padding:6px 10px;border-radius:4px;margin-bottom:8px;display:none}
+ul{padding-left:18px;margin:6px 0}
+li{margin:2px 0}
 </style></head><body><main>
 <h1>Digital Civilization</h1>
-<div id="warn"></div><div id="bar">loading…</div>
-<canvas id="c" width="800" height="500"></canvas>
-<div id="tip"></div>
-<h2 style="font-size:14px">Chronicle</h2><ul id="feed"></ul>
+<div class="sub">A small living map of the repository. Hover buildings for details.</div>
+<div id="warn"></div>
+<div id="bar">loading…</div>
+<canvas id="c" width="960" height="560"></canvas>
+<div id="tip">Hover a building or worker</div>
+<h2 style="font-size:14px;margin:14px 0 4px">Chronicle</h2>
+<ul id="feed"></ul>
 </main>
 <script>
 "use strict";
-const cv=document.getElementById('c'),g=cv.getContext('2d'),$=id=>document.getElementById(id);
-const COL={core:'#4aa3ff',hermes:'#5fd16b',local:'#ffb347'};
-let w=null,t=0,lots=[];
-const px=(x,y,a,b,c)=>{g.fillStyle=c;g.fillRect(x|0,y|0,a,b)};
-const txt=(s,x,y,c)=>{g.fillStyle=c||'#fff';g.font='9px monospace';g.fillText(s,x|0,y|0)};
-function building(x,y,a,b,c){px(x,y+6,a,b-6,c);px(x-1,y,a+2,7,'#7a3b2e');px(x+a/2-2,y+b-8,4,8,'#222')}
-function scaffold(x,y){px(x,y,24,30,'#6b5a3a');px(x+2,y+2,20,26,'#2f4a2c');for(let i=0;i<3;i++)px(x,y+8+i*8,24,2,'#c9a44c')}
-function person(x,y,c,bob,tool){px(x-3,y-13+bob,6,2,c);px(x-3,y-11+bob,6,4,'#f1c9a0');px(x-4,y-7+bob,8,7,c);
-  px(x-4,y+bob,3,3,'#222');px(x+1,y+bob,3,3,'#222');if(tool)px(x+5,y-8+(t%2?-3:0),2,6,'#ddd')}
-function draw(){
-  g.clearRect(0,0,800,500);px(0,0,800,500,'#2f4a2c');
-  px(0,110,800,6,'#8a7a5a');px(0,350,800,6,'#8a7a5a');
-  if(!w)return;lots=[];
-  building(350,14,100,60,'#9aa3b8');txt('Charter Hall',362,88);
-  building(40,20,70,50,'#b08a5a');txt('Chronicle '+w.journal.length,40,84);
-  building(660,20,70,50,'#8a6aa8');txt('Approval: '+w.pending_contributions,660,84);
-  const built={};w.inventions.forEach(i=>{if(i.task)built[i.task]=i});
-  w.districts.slice(0,10).forEach((d,i)=>{
-    const col=i%5,row=(i/5)|0,px0=10+col*160,py0=122+row*118;
-    px(px0,py0,148,100,'#6f5f43');txt(d.name.slice(0,24),px0+4,py0+10,'#fff');
-    d.tasks.slice(0,10).forEach((tk,k)=>{
-      const x=px0+9+(k%5)*27,y=py0+18+((k/5)|0)*38,b=built[tk.n];
-      if(b){building(x,y,22,30,'#4aa3ff')}else{px(x,y,22,30,'#7d6d50');px(x+2,y+2,18,26,'#6f5f43')}
-      lots.push({x,y,w:22,h:30,s:'#'+tk.n+' '+tk.title+(b?'  [BUILT: '+b.name+']':'  [open]')})});
-  });
-  let fx=20;w.inventions.filter(i=>!i.task).forEach(i=>{building(fx,372,30,34,'#e0a040');txt(i.name.slice(0,12),fx-4,418);
-    lots.push({x:fx,y:372,w:30,h:34,s:i.name+': '+i.summary});fx+=50});
-  w.branches.forEach(b=>{scaffold(fx,374);txt(b.slice(-12),fx-4,418);lots.push({x:fx,y:374,w:24,h:30,s:'under construction: '+b});fx+=44});
-  const busy={};w.working.forEach((k,i)=>{busy[k.agent]=1;const x=70+i*90;
-    px(x-14,440,28,6,'#5a4630');
-    if(k.stalled){g.globalAlpha=.5;person(x,436,'#888',0,false);g.globalAlpha=1;txt('zz #'+k.task,x-14,458,'#aaa')}
-    else{person(x,436,COL[k.agent]||'#c0c0d0',(t%2),true);txt(k.agent+' #'+k.task,x-24,458)}});
-  const idle=w.agents.filter(a=>!busy[a.id]);
-  idle.forEach((a,i)=>{const x=80+i*110+Math.sin(t/8+i)*18;person(x,486,COL[a.id]||'#8a8aa0',0,false);txt(a.id,x-18,498,'#cfd')});
+const cv=document.getElementById('c'), g=cv.getContext('2d');
+const $=id=>document.getElementById(id);
+const COL={core:'#4aa3ff',hermes:'#5fd16b',local:'#ffb347',visitor:'#c0c0d0'};
+let w=null, t=0, lots=[], agents=[];
+
+function px(x,y,w,h,c){g.fillStyle=c;g.fillRect(x|0,y|0,w,h)}
+function txt(s,x,y,c,sz){g.fillStyle=c||'#fff';g.font=(sz||9)+'px ui-monospace,monospace';g.fillText(s,x|0,y|0)}
+
+// Terrain
+function drawTerrain(){
+  // base grass with subtle variation
+  for(let y=0;y<560;y+=8){
+    for(let x=0;x<960;x+=8){
+      const v=((x*7+y*13)&15);
+      const c=v<2?'#254a2e':v<4?'#2a5233':'#2f5a38';
+      px(x,y,8,8,c);
+    }
+  }
+  // dirt paths
+  px(0,100,960,10,'#6b5a3a');
+  px(0,320,960,10,'#6b5a3a');
+  px(470,100,12,230,'#6b5a3a');
+  // small plaza
+  px(400,30,160,60,'#5a4a32');
+  px(408,38,144,44,'#6b5a3a');
 }
-function show(d){w=d;const c=d.counts;
-  $('warn').style.display=d.demo?'block':'none';$('warn').textContent=d.demo?'DEMO DATA':'';
-  $('bar').textContent='updated '+d.generated.slice(0,19).replace('T',' ')+' UTC  |  pending '+c.pending+'  running '+c.running+'  done '+c.done+'  failed '+c.failed;
-  const f=$('feed');f.textContent='';d.journal.forEach(s=>{const li=document.createElement('li');li.textContent=s;f.appendChild(li)})}
-async function poll(){try{const r=await fetch('world.json?'+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;show(await r.json())}
-  catch(e){$('bar').textContent='world.json unavailable (open via the local --serve, or the published page)'}}
-cv.addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*800/r.width,y=(e.clientY-r.top)*500/r.height;
-  const l=lots.find(l=>x>=l.x&&x<=l.x+l.w&&y>=l.y&&y<=l.y+l.h);$('tip').textContent=l?l.s:''});
-setInterval(()=>{t++;draw()},150);poll();setInterval(poll,10000);
+
+function tree(x,y){
+  px(x+4,y+10,4,6,'#4a3420');
+  px(x,y,12,10,'#2d6b3a');
+  px(x+2,y+2,8,6,'#3a7d48');
+}
+
+function building(x,y,w,h,body,roof){
+  // shadow
+  px(x+2,y+h-2,w,4,'#1a281c');
+  // body
+  px(x,y+8,w,h-8,body);
+  // roof
+  px(x-2,y,w+4,10,roof||'#7a3b2e');
+  px(x-4,y+2,w+8,6,roof||'#7a3b2e');
+  // door
+  px(x+w/2-3,y+h-10,6,10,'#2a2018');
+  // windows
+  if(w>20){
+    px(x+4,y+12,5,5,'#c8e0f0');
+    px(x+w-9,y+12,5,5,'#c8e0f0');
+  }
+}
+
+function emptyLot(x,y){
+  px(x,y,20,26,'#5a4a32');
+  px(x+2,y+2,16,22,'#4a3e2a');
+  px(x+8,y+10,4,6,'#6b5a3a');
+}
+
+function person(x,y,col,frame,working){
+  const bob=working?(frame%4<2?1:0):0;
+  // shadow
+  px(x-4,y+1,8,2,'#1a281c');
+  // body
+  px(x-4,y-12+bob,8,7,col);
+  // head
+  px(x-3,y-16+bob,6,4,'#f0c8a0');
+  // legs
+  const leg=frame%4;
+  px(x-3,y-5+bob,3,4,leg<2?'#222':'#333');
+  px(x,y-5+bob,3,4,leg>=2?'#222':'#333');
+  // tool if working
+  if(working) px(x+5,y-10+(frame%6<3?-2:0),2,7,'#ddd');
+}
+
+function draw(){
+  g.clearRect(0,0,960,560);
+  drawTerrain();
+  if(!w){txt('loading world…',400,280,'#fff',12);return;}
+  lots=[];
+
+  // Landmark buildings
+  building(420,20,120,50,'#9aa8c0','#6a4a3a');
+  txt('Charter Hall',438,78,'#fff');
+  lots.push({x:420,y:20,w:120,h:50,s:'Charter Hall — constitution & rules'});
+
+  building(40,16,80,48,'#c4a070','#7a3b2e');
+  txt('Chronicle',52,72,'#fff');
+  lots.push({x:40,y:16,w:80,h:48,s:'Chronicle — '+w.journal.length+' recent entries'});
+
+  building(820,16,80,48,'#8a6aa8','#4a3a5a');
+  txt('Approval',832,72,'#fff');
+  lots.push({x:820,y:16,w:80,h:48,s:'Approval desk — '+w.pending_contributions+' pending'});
+
+  // Trees around plaza
+  tree(380,40); tree(560,36); tree(30,70); tree(900,60);
+
+  // Districts
+  const built={};
+  (w.inventions||[]).forEach(i=>{if(i.task)built[i.task]=i});
+  (w.districts||[]).slice(0,10).forEach((d,i)=>{
+    const col=i%5, row=(i/5)|0;
+    const px0=20+col*186, py0=130+row*100;
+    // district ground
+    px(px0,py0,176,90,'#3a4a32');
+    px(px0+2,py0+2,172,86,'#324228');
+    txt(d.name.slice(0,22),px0+4,py0+12,'#e8eaf0');
+    (d.tasks||[]).slice(0,10).forEach((tk,k)=>{
+      const x=px0+8+(k%5)*32, y=py0+18+((k/5)|0)*34;
+      const b=built[tk.n];
+      if(b){
+        building(x,y,22,28,'#4aa3ff','#2a5a8a');
+      }else{
+        emptyLot(x,y);
+      }
+      lots.push({x,y,w:22,h:28,s:'#'+tk.n+' '+tk.title+(b?'  [built: '+b.name+']':'  [open lot]')});
+    });
+  });
+
+  // Workshop row (inventions without task numbers)
+  let fx=30;
+  (w.inventions||[]).filter(i=>!i.task).forEach(i=>{
+    building(fx,430,28,32,'#e0a040','#8a5a20');
+    txt(i.name.slice(0,10),fx-2,470,'#fff');
+    lots.push({x:fx,y:430,w:28,h:32,s:i.name+': '+(i.summary||'')});
+    fx+=48;
+  });
+
+  // Construction scaffolds
+  (w.branches||[]).forEach(b=>{
+    px(fx,432,24,28,'#6b5a3a');
+    for(let i=0;i<3;i++) px(fx,436+i*8,24,2,'#c9a44c');
+    txt(b.slice(-10),fx-4,470,'#ddd');
+    lots.push({x:fx,y:432,w:24,h:28,s:'under construction: '+b});
+    fx+=40;
+  });
+
+  // Agents — working and idle, with simple walking
+  const busy={};
+  (w.working||[]).forEach((k,i)=>{
+    busy[k.agent]=1;
+    const baseX=80+i*100;
+    const walk=k.stalled?0:Math.sin(t/12+i)*12;
+    const x=baseX+walk;
+    person(x,500,COL[k.agent]||'#c0c0d0',t,!k.stalled);
+    if(k.stalled){
+      g.globalAlpha=0.6;
+      txt('zz',x-6,482,'#aaa');
+      g.globalAlpha=1;
+    }else{
+      txt(k.agent,x-14,516,'#fff');
+    }
+    lots.push({x:x-8,y:484,w:16,h:20,s:k.agent+' working on #'+k.task+(k.stalled?' (stalled)':'')});
+  });
+
+  const idle=(w.agents||[]).filter(a=>!busy[a.id]);
+  idle.forEach((a,i)=>{
+    const x=60+i*90+Math.sin(t/18+i)*20;
+    person(x,530,COL[a.id]||'#8a8aa0',t,false);
+    txt(a.id,x-16,546,'#cfd');
+    lots.push({x:x-8,y:514,w:16,h:20,s:a.id+' (idle)'});
+  });
+
+  // Small ambient birds / leaves
+  if((t%40)<20){
+    px(200+(t%200),40,2,2,'#eee');
+    px(700-(t%180),60,2,2,'#eee');
+  }
+}
+
+function show(d){
+  w=d;
+  const c=d.counts||{};
+  $('warn').style.display=d.demo?'block':'none';
+  $('warn').textContent=d.demo?'Showing demo snapshot — regenerate with: python inventions/world/world.py':'';
+  $('bar').textContent='updated '+(d.generated||'').slice(0,19).replace('T',' ')+' UTC  |  pending '+(c.pending||0)+'  running '+(c.running||0)+'  done '+(c.done||0)+'  failed '+(c.failed||0);
+  const f=$('feed');
+  f.textContent='';
+  (d.journal||[]).forEach(s=>{
+    const li=document.createElement('li');
+    li.textContent=s;
+    f.appendChild(li);
+  });
+}
+
+async function poll(){
+  try{
+    const r=await fetch('world.json?'+Date.now(),{cache:'no-store'});
+    if(!r.ok) throw 0;
+    show(await r.json());
+  }catch(e){
+    $('bar').textContent='world.json unavailable';
+  }
+}
+
+cv.addEventListener('mousemove',e=>{
+  const r=cv.getBoundingClientRect();
+  const x=(e.clientX-r.left)*960/r.width;
+  const y=(e.clientY-r.top)*560/r.height;
+  const l=lots.find(l=>x>=l.x&&x<=l.x+l.w&&y>=l.y&&y<=l.y+l.h);
+  $('tip').textContent=l?l.s:'Hover a building or worker';
+});
+
+setInterval(()=>{t++;draw()},80);
+poll();
+setInterval(poll,10000);
 </script></body></html>
