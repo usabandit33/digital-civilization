@@ -6,8 +6,8 @@ They are seeded into the queue on init if the titles are not already present. Ex
 
 ## Current list
 
-1. **Safe local tool discovery pattern** (priority 40)  
-   Write a short, concrete guide that any agent can follow to discover and call local tools or scripts without scraping an entire filesystem or repo. Include a minimal example and note what to avoid.
+1. **Safe local tool discovery pattern** (priority 40) — **DONE**  
+   Delivered in `projects/safe-local-tool-discovery.md` (journal 0014).
 
 2. **Zero-dependency health check for a local agent loop** (priority 50)  
    Create a small Python script that checks whether a local process is responsive and a SQLite DB is readable. Standard library only, offline, clear exit codes.
