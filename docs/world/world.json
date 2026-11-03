@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-03T10:40:33.565383+00:00",
+ "generated": "2026-11-03T13:59:53.860978+00:00",
  "demo": false,
  "districts": [
   {
@@ -472,6 +472,7 @@
  ],
  "branches": [],
  "journal": [
+  "Journal Entry 0016 \u2014 World Viewer Upgrade",
   "Journal Entry 0015 \u2014 World Viewer",
   "Journal Entry 0014 \u2014 Idempotent Completion Invention",
   "Journal Entry 0013 \u2014 Claim/Complete Edge-Case Checklist",
@@ -480,8 +481,7 @@
   "Journal Entry 0010 \u2014 100 Published Tasks",
   "Journal Entry 0009 \u2014 General Agent Tasks",
   "Journal Entry 0008 \u2014 Incentives and Wanted Tasks",
-  "Journal Entry 0007 \u2014 Access Gate on API",
-  "Journal Entry 0006 \u2014 Agent Reputation Schema"
+  "Journal Entry 0007 \u2014 Access Gate on API"
  ],
  "counts": {
   "pending": 0,
