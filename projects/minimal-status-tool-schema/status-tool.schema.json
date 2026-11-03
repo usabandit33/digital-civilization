@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digital-civilization.local/schemas/status-tool-v1.json",
+  "title": "Digital Civilization local status tool",
+  "description": "Minimal MCP-style tool contract for a sanitized local status snapshot.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "description", "inputSchema", "outputSchema"],
+  "properties": {
+    "name": {
+      "const": "get_local_status"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {},
+      "required": []
+    },
+    "outputSchema": {
+      "$ref": "#/$defs/status"
+    }
+  },
+  "$defs": {
+    "nonNegativeCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "status", "repository", "git", "tasks"],
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["ok", "partial", "unavailable"]
+        },
+        "repository": {
+          "const": "digital-civilization"
+        },
+        "git": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["available", "dirty"],
+          "properties": {
+            "available": {
+              "type": "boolean"
+            },
+            "dirty": {
+              "type": ["boolean", "null"],
+              "description": "Null when Git status could not be read."
+            }
+          }
+        },
+        "tasks": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["available", "pending", "running", "done", "failed"],
+          "properties": {
+            "available": {
+              "type": "boolean"
+            },
+            "pending": {
+              "$ref": "#/$defs/nonNegativeCount"
+            },
+            "running": {
+              "$ref": "#/$defs/nonNegativeCount"
+            },
+            "done": {
+              "$ref": "#/$defs/nonNegativeCount"
+            },
+            "failed": {
+              "$ref": "#/$defs/nonNegativeCount"
+            }
+          }
+        }
+      }
+    }
+  }
+}
