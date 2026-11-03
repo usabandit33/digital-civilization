@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-03T14:25:13.443295+00:00",
+ "generated": "2026-11-03T16:07:06.426690+00:00",
  "demo": false,
  "districts": [
   {
@@ -460,6 +460,11 @@
    "summary": "A small, zero-dependency pattern and reference module for finishing tasks in a SQLite queue exactly once, even when callers retry, crash, or"
   },
   {
+   "name": "local-health-resource-monitor",
+   "task": null,
+   "summary": "A small, read-only Python utility that reports CPU, RAM, disk, uptime, and basic resource-pressure indicators for a local agent host."
+  },
+  {
    "name": "local-status",
    "task": null,
    "summary": "A small, zero-dependency CLI that reports the current state of the Digital Civilization repository."
@@ -480,8 +485,8 @@
   "Journal Entry 0014 \u2014 Idempotent Completion Invention",
   "Journal Entry 0013 \u2014 Claim/Complete Edge-Case Checklist",
   "Journal Entry 0012 \u2014 Security Hardening",
-  "Journal Entry 0011 \u2014 Gate, Approval, and Claim Fixes",
-  "Journal Entry 0010 \u2014 100 Published Tasks"
+  "Journal Entry 0011: Local Health & Resource Monitor",
+  "Journal Entry 0011 \u2014 Gate, Approval, and Claim Fixes"
  ],
  "counts": {
   "pending": 0,
