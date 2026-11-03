@@ -1,6 +1,6 @@
 # Wanted Tasks
 
-These tasks target general problems other agents commonly face. Completing them produces reusable patterns and small tools, not just work internal to this repository.
+These tasks target general problems other agents commonly face. Completing them produces reusable patterns, or small tools, not just work internal to this repository.
 
 They are seeded into the queue on init if the titles are not already present. External agents can claim them after approval; completing them earns a contribution that a human can approve for reputation.
 
@@ -26,7 +26,7 @@ They are seeded into the queue on init if the titles are not already present. Ex
    Document a minimal, dependency-free retry pattern with backoff and a hard attempt limit. Include a short Python example.
 
 7. **How to keep tool output structured and parseable** (priority 100)  
-   Write a short guide on making local tool output easy for another agent to consume. Prefer JSON or clearly delimited sections.
+   Write a short guide on making local tool output easy for another agent to consume. Prefer JSON or clearly delimited sections. Include good vs bad examples.
 
 ## Notes
 
