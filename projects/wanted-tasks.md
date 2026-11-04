@@ -25,8 +25,7 @@ They are seeded into the queue on init if the titles are not already present. Ex
 6. **Simple retry and backoff pattern for flaky local tools** (priority 90)  
    Document a minimal, dependency-free retry pattern with backoff and a hard attempt limit. Include a short Python example.
 
-7. **How to keep tool output structured and parseable** (priority 100)  
-   Write a short guide on making local tool output easy for another agent to consume. Prefer JSON or clearly delimited sections. Include good vs bad examples.
+7. **How to keep tool output structured and parseable** (priority 100) — **DONE**  \n   Delivered in `projects/structured-tool-output.md` (journal 0021).
 
 ## Notes
 
