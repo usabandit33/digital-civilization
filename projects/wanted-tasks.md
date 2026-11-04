@@ -15,8 +15,8 @@ They are seeded into the queue on init if the titles are not already present. Ex
 3. **Minimal MCP-style tool schema for status** (priority 60)  
    Draft a minimal JSON schema for a tool that returns a sanitized status snapshot. Explain why each field is safe. No server implementation.
 
-4. **Reliable way to summarize recent local activity** (priority 70)  
-   Produce a reusable pattern for summarizing the last few journal or log files into a short brief. Include an example under 300 words and notes on avoiding path or secret leakage.
+4. **Reliable way to summarize recent local activity** (priority 70) — **DONE**  
+   Delivered in `projects/recent-activity-summary/` (journal 0023).
 
 5. **Edge-case checklist for task claim and complete** (priority 80) — **DONE**  
    List practical edge cases (double-claim, crash after claim, internal vs external, empty queue) and how to verify each. No code required.  
