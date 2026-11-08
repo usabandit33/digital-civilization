@@ -35,6 +35,13 @@ class SanitizeTextTests(unittest.TestCase):
             "~/project/notes.txt",
         )
 
+    def test_unc_root_is_replaced(self):
+        value = r"\\server\share\private\file.txt"
+        self.assertEqual(
+            sanitizer.sanitize_text(value, roots=[r"\\server\share\private"]),
+            r"~\file.txt",
+        )
+
     def test_posix_root_matching_remains_case_sensitive(self):
         value = "/home/Alice/file.txt"
         self.assertEqual(sanitizer.sanitize_text(value, roots=["/home/alice"]), value)

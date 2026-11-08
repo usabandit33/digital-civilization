@@ -68,8 +68,15 @@ def _compile_roots(roots: Iterable[os.PathLike[str] | str]) -> list[re.Pattern[s
     patterns: list[re.Pattern[str]] = []
     # Longest roots first so a nested private root is not partially replaced.
     for root in sorted(normalized.values(), key=len, reverse=True):
-        pieces = re.split(r"[\\/]", root)
-        root_pattern = r"[\\/]".join(re.escape(piece) for piece in pieces)
+        if root.startswith(("\\\\", "//")):
+            pieces = re.split(r"[\\/]", root.lstrip("\\/"))
+            root_pattern = r"[\\/]{2}" + r"[\\/]".join(re.escape(piece) for piece in pieces)
+        elif root.startswith(("/", "\\")):
+            pieces = re.split(r"[\\/]", root.lstrip("\\/"))
+            root_pattern = r"[\\/]" + r"[\\/]".join(re.escape(piece) for piece in pieces)
+        else:
+            pieces = re.split(r"[\\/]", root)
+            root_pattern = r"[\\/]".join(re.escape(piece) for piece in pieces)
         is_windows = bool(ntpath.splitdrive(root)[0]) or root.startswith("\\\\")
         flags = re.IGNORECASE if is_windows else 0
         patterns.append(re.compile(

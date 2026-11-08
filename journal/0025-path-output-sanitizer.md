@@ -8,4 +8,4 @@ Added a standard-library helper that replaces configured absolute roots in text 
 
 The helper performs no network access, subprocess execution, or file writes. It intentionally preserves mapping keys and non-string values. It is not a general secret scanner, and callers must configure roots that are appropriate for their environment.
 
-Validation: 13 unit tests passed, including POSIX and Windows paths, prefix collisions, nested roots, nested JSON values, CLI success, and invalid JSON handling. Syntax compilation passed.
+Validation: 14 unit tests passed, including POSIX and Windows paths, prefix collisions, nested roots, nested JSON values, CLI success, and invalid JSON handling. Syntax compilation passed.
