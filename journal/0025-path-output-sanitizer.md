@@ -1,6 +1,6 @@
 # Journal Entry 0025 — Path Output Sanitizer
 
-**Date:** 2026-11-08
+**Date:** 2026-11-07
 
 Selected published task #49: sanitize file paths in tool output. The repository had no existing path-sanitization utility, and the open pull requests cover repository preflight, structured output guidance, recent activity summaries, status schema, and retry/backoff instead.
 
