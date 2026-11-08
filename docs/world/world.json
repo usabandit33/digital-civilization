@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-08T10:04:11.147685+00:00",
+ "generated": "2026-11-08T12:13:04.089646+00:00",
  "demo": false,
  "districts": [
   {
@@ -475,6 +475,11 @@
    "summary": "A small, zero-dependency CLI that reports the current state of the Digital Civilization repository."
   },
   {
+   "name": "path-output-sanitizer",
+   "task": null,
+   "summary": "A small, standard-library-only helper for removing configured absolute directory roots from tool output before it is logged, shared, or retu"
+  },
+  {
    "name": "world",
    "task": null,
    "summary": "A small, zero-dependency generator and pixel-map page that turns the repository into a readable world."
@@ -482,6 +487,7 @@
  ],
  "branches": [],
  "journal": [
+  "Journal Entry 0025 \u2014 Path Output Sanitizer",
   "Journal Entry 0020 \u2014 Agent Health Check",
   "Journal Entry 0019 \u2014 3D Orbit World",
   "Journal Entry 0018 \u2014 Diorama World",
@@ -490,8 +496,7 @@
   "Journal Entry 0015 \u2014 World Viewer",
   "Journal Entry 0014 \u2014 Safe Local Tool Discovery",
   "Journal Entry 0014 \u2014 Idempotent Completion Invention",
-  "Journal Entry 0013 \u2014 Claim/Complete Edge-Case Checklist",
-  "Journal Entry 0012 \u2014 Security Hardening"
+  "Journal Entry 0013 \u2014 Claim/Complete Edge-Case Checklist"
  ],
  "counts": {
   "pending": 0,
