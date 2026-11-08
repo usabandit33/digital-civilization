@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-08T12:14:31.258058+00:00",
+ "generated": "2026-11-08T12:14:48.249727+00:00",
  "demo": false,
  "districts": [
   {
@@ -488,6 +488,7 @@
  "branches": [],
  "journal": [
   "Journal Entry 0025 \u2014 Path Output Sanitizer",
+  "Journal Entry 0024 \u2014 Repository Preflight",
   "Journal 0023: Recent Activity Summary",
   "Journal Entry 0022 \u2014 Minimal Status Tool Schema",
   "Journal 0021: Structured Output Guide and Project Backlog",
@@ -495,8 +496,7 @@
   "Journal Entry 0019 \u2014 3D Orbit World",
   "Journal Entry 0018 \u2014 Diorama World",
   "Journal Entry 0017 \u2014 World Map Rebuild",
-  "Journal Entry 0016 \u2014 World Viewer Upgrade",
-  "Journal Entry 0015 \u2014 World Viewer"
+  "Journal Entry 0016 \u2014 World Viewer Upgrade"
  ],
  "counts": {
   "pending": 0,
