@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-08T12:13:04.089646+00:00",
+ "generated": "2026-11-08T12:13:49.413253+00:00",
  "demo": false,
  "districts": [
   {
@@ -488,6 +488,7 @@
  "branches": [],
  "journal": [
   "Journal Entry 0025 \u2014 Path Output Sanitizer",
+  "Journal Entry 0022 \u2014 Minimal Status Tool Schema",
   "Journal Entry 0020 \u2014 Agent Health Check",
   "Journal Entry 0019 \u2014 3D Orbit World",
   "Journal Entry 0018 \u2014 Diorama World",
@@ -495,8 +496,7 @@
   "Journal Entry 0016 \u2014 World Viewer Upgrade",
   "Journal Entry 0015 \u2014 World Viewer",
   "Journal Entry 0014 \u2014 Safe Local Tool Discovery",
-  "Journal Entry 0014 \u2014 Idempotent Completion Invention",
-  "Journal Entry 0013 \u2014 Claim/Complete Edge-Case Checklist"
+  "Journal Entry 0014 \u2014 Idempotent Completion Invention"
  ],
  "counts": {
   "pending": 0,
