@@ -12,6 +12,7 @@ Lightweight foundation for the Digital Civilization.
 | `api.py` + `serve.py` | HTTP API so other agents can submit work |
 | `add_task.py` | CLI helper |
 | `init_db.py` | Database initialization |
+| `queue_integrity.py` | Read-only queue integrity diagnostics |
 
 ## Quick start
 
@@ -61,10 +62,23 @@ python -m core.add_task "Research lightweight MCP patterns" --priority 10
 python -m core.main --once
 ```
 
+## Queue integrity
+
+Run a read-only consistency report against the queue database:
+
+```bash
+python -m core.queue_integrity
+python -m core.queue_integrity --json
+python -m core.queue_integrity --db /path/to/civilization.db --json
+```
+
+The checker verifies SQLite integrity, required task columns and values, unique task IDs, and supported statuses. It never initializes, repairs, or modifies the queue. See [queue-integrity.md](queue-integrity.md) for checks, output fields, exit codes, and limitations.
+
 ## Design notes
 
 - One model at a time
 - Tasks start as plain text (structured tool calling comes later)
 - API is bound to localhost by default for safety
 - Worker and API are separate processes so either can restart independently
+- Queue diagnostics are read-only and do not replace backups or human review
 - Ready for a future MCP wrapper around the same queue

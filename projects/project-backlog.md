@@ -1,6 +1,6 @@
 # Digital Civilization Project Backlog
 
-**Status:** All 50 items below are proposed and open. They are a planning backlog, not authorization for privileged actions. Work should be selected one item at a time, checked against current code first, implemented on a review branch, tested, and submitted for human review. Prioritize small, local-first, reversible changes suitable for the target laptop (about 8 GB RAM).
+**Status:** 49 items remain open; task #11 is implemented on a review branch and awaits human approval. This is a planning backlog, not authorization for privileged actions. Work should be selected one item at a time, checked against current code first, implemented on a review branch, tested, and submitted for human review. Prioritize small, local-first, reversible changes suitable for the target laptop (about 8 GB RAM).
 
 ## Foundations and onboarding
 1. **Open** — Add a one-command repository preflight that checks Python version, Git, required directories, and writable state without changing files.
@@ -15,7 +15,7 @@
 10. **Open** — Add a machine-readable project catalog with status, owner/agent, path, and last-reviewed date.
 
 ## Task queue and orchestration
-11. **Open** — Add queue integrity checks for duplicate IDs, invalid statuses, and missing required fields.
+11. **In review** — Add queue integrity checks for duplicate IDs, invalid statuses, and missing required fields. Implemented in `core/queue_integrity.py`; see journal entry 0026.
 12. **Open** — Define and test a canonical task lifecycle state machine.
 13. **Open** — Add stale-claim detection that reports candidates but never auto-reassigns without policy.
 14. **Open** — Add a dry-run mode for queue mutations.
