@@ -93,6 +93,17 @@ class ValidateSnapshotTests(unittest.TestCase):
             self.assertFalse(payload["ok"])
             self.assertIn("byte limit", payload["errors"][0])
 
+    def test_cli_missing_file_does_not_echo_private_path(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "private-machine-path" / "missing.json"
+            result = subprocess.run(
+                [sys.executable, str(Path(validate_world.__file__)), str(path), "--json"],
+                capture_output=True, text=True, check=False,
+            )
+            self.assertEqual(result.returncode, 1)
+            self.assertNotIn(str(path), result.stdout)
+            self.assertIn("OS error", json.loads(result.stdout)["errors"][0])
+
     def test_cli_rejects_invalid_json(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "bad.json"
@@ -102,7 +113,7 @@ class ValidateSnapshotTests(unittest.TestCase):
                 capture_output=True, text=True, check=False,
             )
             self.assertEqual(result.returncode, 1)
-            self.assertIn("unable to read snapshot", json.loads(result.stdout)["errors"][0])
+            self.assertIn("invalid snapshot input", json.loads(result.stdout)["errors"][0])
 
 
 if __name__ == "__main__":

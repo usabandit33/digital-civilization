@@ -222,8 +222,11 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         errors = validate_snapshot(_read_snapshot(args.snapshot))
-    except (OSError, UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
-        errors = [f"$: unable to read snapshot: {exc}"]
+    except OSError as exc:
+        # Do not echo the supplied path: it may contain a private machine name.
+        errors = [f"$: unable to read snapshot (OS error {exc.errno})"]
+    except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+        errors = [f"$: invalid snapshot input: {exc}"]
 
     result = {"ok": not errors, "errors": errors}
     if args.json:
