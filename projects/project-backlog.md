@@ -60,7 +60,7 @@
 47. **Open** — Add an API contract smoke-test harness that targets explicitly configured localhost endpoints only.
 48. **Open** — Add an MCP capability catalog format with side-effect and approval metadata.
 49. **Open** — Add a world-viewer data validator for required fields and bounded counts.
-50. **Open** — Add a world-viewer accessibility pass for keyboard controls, labels, and reduced-motion behavior.
+50. **In review** — Add a world-viewer accessibility pass for keyboard controls, labels, and reduced-motion behavior. Implemented in the Living World viewer prototype; see journal entry 0027.
 
 ## Selection guidance
 Start with tasks 1, 11, 21, 31, or 41 because they improve reliability and safety across the project. Re-check the repository and open PRs before claiming any item to avoid duplicate work.

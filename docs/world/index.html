@@ -1,171 +1,132 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Digital Civilization</title>
+<meta name="theme-color" content="#111a20">
+<title>Digital Civilization · Living World</title>
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;height:100%;background:#0a1018;color:#d8e4f0;font:14px/1.4 system-ui,sans-serif;overflow:hidden}
-canvas{display:block;width:100%;height:100%;cursor:grab}
-canvas.drag{cursor:grabbing}
-#hud{position:absolute;left:12px;top:12px;pointer-events:none}
-h1{font-size:16px;margin:0;font-weight:600}
-.sub{font-size:11px;color:#7a90a8;margin-top:2px}
-#bar{position:absolute;left:12px;bottom:12px;font:11px ui-monospace,monospace;color:#7a90a8;pointer-events:none}
-#tip{position:absolute;pointer-events:none;background:#121a28ee;padding:6px 10px;border-radius:4px;font:12px ui-monospace,monospace;opacity:0;transition:opacity .1s}
-#tip.on{opacity:1}
-</style></head><body>
-<canvas id="c"></canvas>
-<div id="hud"><h1>Digital Civilization</h1><div class="sub">Drag to orbit · scroll to zoom</div></div>
-<div id="bar"></div>
-<div id="tip"></div>
+:root{color-scheme:dark;--bg:#10191e;--panel:#18252b;--panel2:#202f35;--line:#34464b;--text:#e6e9dc;--muted:#9aada7;--gold:#d9b56d;--green:#86b58b;--blue:#83b6c8;--red:#d98d78}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 48% 35%,#253a38 0,#152329 48%,#0e171c 100%);color:var(--text);font:14px/1.45 system-ui,sans-serif;min-height:100vh}
+button{font:inherit;color:inherit}.shell{max-width:1500px;margin:auto;padding:18px;display:grid;gap:14px;grid-template-columns:210px minmax(0,1fr) 260px;grid-template-rows:auto 1fr;min-height:100vh}
+header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:4px 2px 10px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px}.sigil{width:42px;height:42px;border:1px solid #9c8556;border-radius:12px;display:grid;place-items:center;color:var(--gold);font-size:24px;background:linear-gradient(145deg,#39453c,#1b292b)}h1{font:600 19px Georgia,serif;letter-spacing:.04em;margin:0}.eyebrow{color:var(--gold);font-size:10px;letter-spacing:.18em;text-transform:uppercase}.sub{color:var(--muted);font-size:12px}.live{display:flex;align-items:center;gap:8px;color:var(--green);font-size:12px}.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 12px #86b58b88}
+nav,.panel{background:linear-gradient(160deg,#1b2a30ed,#142126ed);border:1px solid var(--line);border-radius:13px;padding:12px}
+nav{display:flex;flex-direction:column;gap:6px;align-self:start}nav .navtitle{font-size:10px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;margin:8px 8px 4px}
+nav button,.building-list button{border:1px solid transparent;background:transparent;text-align:left;padding:10px;border-radius:8px;cursor:pointer;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+nav button[aria-current=page],nav button:hover,.building-list button[aria-pressed=true]{background:#2a3c3d;border-color:#52665b;color:var(--text)}
+nav button:focus-visible,button:focus-visible,canvas:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.navicon{width:22px;display:inline-block;color:var(--gold)}
+main{min-width:0;display:flex;flex-direction:column;gap:12px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.stat{background:#1a292ddd;border:1px solid var(--line);border-radius:10px;padding:10px 12px}.stat strong{display:block;font:600 23px Georgia,serif;color:var(--gold)}.stat span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}
+.worldframe{position:relative;overflow:hidden;border:1px solid #52645a;border-radius:14px;background:linear-gradient(#263a3b,#1b302e 65%,#172b2a);min-height:470px;box-shadow:0 18px 50px #0005}
+.worldhead{position:absolute;z-index:2;left:16px;top:14px;pointer-events:none}.worldhead h2{font:600 17px Georgia,serif;margin:0}.worldhead p{font-size:11px;color:#c1c8b4;margin:2px 0}
+canvas{width:100%;height:470px;display:block;touch-action:pan-y;cursor:pointer}
+.legend{position:absolute;left:14px;bottom:12px;display:flex;gap:12px;flex-wrap:wrap;background:#101b1bd9;border:1px solid #52645a;border-radius:8px;padding:7px 10px;font-size:10px;color:#d1d8c9}.key{display:flex;align-items:center;gap:5px}.swatch{width:8px;height:8px;border-radius:2px;background:var(--gold)}
+.building-list{display:flex;gap:6px;overflow-x:auto;padding:2px 0}.building-list button{white-space:nowrap;border-color:var(--line);background:#1b2a30}
+.right{display:flex;flex-direction:column;gap:12px;align-self:start}.panel h2{font:600 15px Georgia,serif;margin:0 0 10px}.panel .muted{color:var(--muted);font-size:12px}.inspect-title{font:600 18px Georgia,serif;color:var(--gold);margin:0 0 4px}.badge{display:inline-block;border:1px solid #52665b;border-radius:99px;padding:3px 8px;font-size:10px;color:var(--green);margin:6px 0 10px}
+.detailrow{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:8px 0;font-size:12px}.detailrow span:first-child{color:var(--muted)}.activity{padding:8px 0;border-top:1px solid var(--line);font-size:12px}.activity small{display:block;color:var(--muted);margin-top:2px}.empty{color:var(--muted);font-size:12px}
+footer{grid-column:1/-1;color:var(--muted);font-size:10px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media(max-width:1050px){.shell{grid-template-columns:170px minmax(0,1fr)}.right{grid-column:2;display:grid;grid-template-columns:1fr 1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.shell{padding:10px;grid-template-columns:1fr;grid-template-rows:auto auto 1fr}.shell>nav{grid-row:2;flex-direction:row;overflow-x:auto}.shell>nav .navtitle{display:none}nav button{white-space:nowrap;padding:8px}.right{grid-column:1;display:grid;grid-template-columns:1fr}.worldframe{min-height:390px}canvas{height:390px}.stats{grid-template-columns:repeat(2,1fr)}header{align-items:flex-start}.live{font-size:10px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+ <div class="brand"><div class="sigil" aria-hidden="true">✥</div><div><div class="eyebrow">A persistent digital society</div><h1>Digital Civilization</h1><div class="sub">The Living World · local-first simulation view</div></div></div>
+ <div class="live"><span class="dot" aria-hidden="true"></span><span id="connection">Connecting to world data…</span></div>
+</header>
+<nav aria-label="Civilization sections">
+ <div class="navtitle">Your civilization</div>
+ <button type="button" aria-current="page"><span><span class="navicon">⌂</span> World</span><span>›</span></button>
+ <button type="button" disabled title="Citizen roster will be added in a later milestone"><span><span class="navicon">♟</span> Citizens</span><span>—</span></button>
+ <button type="button" disabled title="Research tree will be added in a later milestone"><span><span class="navicon">✧</span> Research</span><span>—</span></button>
+ <button type="button" disabled title="Mission controls will be added in a later milestone"><span><span class="navicon">⚑</span> Missions</span><span>—</span></button>
+ <div class="navtitle">World districts</div>
+ <div id="district-nav" class="empty">Loading districts…</div>
+</nav>
+<main>
+ <section class="stats" aria-label="Civilization statistics">
+  <div class="stat"><strong id="pending">0</strong><span>Awaiting work</span></div>
+  <div class="stat"><strong id="running">0</strong><span>In progress</span></div>
+  <div class="stat"><strong id="done">0</strong><span>Completed</span></div>
+  <div class="stat"><strong id="agents">0</strong><span>Known visitors</span></div>
+ </section>
+ <section class="worldframe" aria-label="Interactive isometric civilization map">
+  <div class="worldhead"><h2>Capital &amp; Districts</h2><p>Choose a landmark to inspect its real project data</p></div>
+  <canvas id="world" tabindex="0" role="img" aria-label="Isometric map of the Digital Civilization. Use the landmark buttons below to select buildings.">Your browser does not support canvas. Use the landmark buttons below.</canvas>
+  <div class="legend"><span class="key"><i class="swatch"></i> Established</span><span class="key"><i class="swatch" style="background:#83b6c8"></i> Active work</span><span class="key"><i class="swatch" style="background:#d98d78"></i> Needs attention</span></div>
+ </section>
+ <div id="building-list" class="building-list" aria-label="Select a landmark"><button type="button">Loading landmarks…</button></div>
+</main>
+<aside class="right">
+ <section class="panel" aria-live="polite" aria-atomic="true">
+  <div class="eyebrow">Selected landmark</div><h2 id="inspect-name" class="inspect-title">Charter Hall</h2><div id="inspect-status" class="badge">Core governance</div>
+  <p id="inspect-desc" class="muted">The heart of the civilization. Select a district or landmark to explore its current state.</p>
+  <div class="detailrow"><span>Related districts</span><strong id="inspect-districts">—</strong></div>
+  <div class="detailrow"><span>Known inventions</span><strong id="inspect-inventions">—</strong></div>
+  <div class="detailrow"><span>Active workers</span><strong id="inspect-workers">—</strong></div>
+ </section>
+ <section class="panel"><h2>Recent chronicle</h2><div id="chronicle" class="empty">Waiting for journal data…</div></section>
+ <section class="panel"><h2>World status</h2><div class="detailrow"><span>Snapshot updated</span><strong id="updated">—</strong></div><div class="detailrow"><span>Pending approvals</span><strong id="approvals">0</strong></div><div class="detailrow"><span>Failed tasks</span><strong id="failed">0</strong></div><p class="muted">This view is observational only. It cannot assign work, approve changes, or modify the civilization.</p></section>
+</aside>
+<footer><span>Digital Civilization · Living World prototype</span><span id="source-note">Read-only snapshot · refreshes every 8 seconds</span></footer>
+</div>
 <script>
 "use strict";
-const cv=document.getElementById('c'), g=cv.getContext('2d');
-const tip=document.getElementById('tip'), bar=document.getElementById('bar');
-let W=null, t=0, hot=[];
-let yaw=0.4, pitch=0.55, dist=420, drag=null;
-
-function resize(){
-  const d=Math.min(devicePixelRatio||1,2);
-  cv.width=innerWidth*d; cv.height=innerHeight*d;
-  g.setTransform(d,0,0,d,0,0);
+const canvas=document.getElementById("world"),ctx=canvas.getContext("2d");
+const $=id=>document.getElementById(id);
+let data=null,selected="Charter Hall",hits=[],frame=0,lastPoll=0,scale=1;
+const landmarks=[
+ {id:"Charter Hall",kind:"core",x:0,z:0,color:"#d9b56d",desc:"Governance, identity, safety boundaries and the central operating charter."},
+ {id:"University",kind:"research",x:-2,z:-1,color:"#83b6c8",desc:"Knowledge, memory, journal entries and research districts."},
+ {id:"Workshop",kind:"inventions",x:1,z:-1,color:"#d9b56d",desc:"Tested inventions and reusable capabilities."},
+ {id:"Mission Yard",kind:"tasks",x:-2,z:1,color:"#83b6c8",desc:"The task queue and active work across the civilization."},
+ {id:"Market Square",kind:"services",x:1,z:1,color:"#86b58b",desc:"Services and interfaces exposed to other agents."},
+ {id:"Watchtower",kind:"safety",x:0,z:-2,color:"#d98d78",desc:"Health, reliability, approvals and safety checks."}
+];
+function resize(){const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);canvas.width=Math.max(1,Math.floor(r.width*d));canvas.height=Math.max(1,Math.floor(r.height*d));ctx.setTransform(d,0,0,d,0,0);scale=d;draw()}
+function project(x,z,y=0){const w=canvas.clientWidth,h=canvas.clientHeight;return [w*.5+(x-z)*42,h*.57+(x+z)*21-y]}
+function poly(points,fill,stroke){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.stroke()}}
+function tile(x,z,color){const p=project(x,z);poly([[p[0],p[1]-19],[p[0]+40,p[1]],[p[0],p[1]+19],[p[0]-40,p[1]]],color,"#7a8d6c")}
+function building(b){const [x,z]=project(b.x,b.z);const h=b.id==="Charter Hall"?72:44,w=b.id==="Charter Hall"?25:19;
+ const col=b.color,top="#d9d0b5",shade="#263a39";
+ poly([[x-w,z-h],[x+w,z-h],[x+w,z],[x-w,z]],"#43564a");
+ poly([[x-w,z-h],[x,z-h-18],[x,z+18],[x-w,z]],"#344b43");
+ poly([[x,z-h-18],[x+w,z-h],[x+w,z],[x,z+18]],"#526354");
+ poly([[x-w,z-h],[x,z-h-18],[x+w,z-h],[x,z-h+1]],col);
+ poly([[x-w-5,z-h],[x,z-h-24],[x+w+5,z-h]],top);
+ ctx.fillStyle="#172522";ctx.fillRect(x-5,z-17,10,17);
+ ctx.fillStyle="#d8cba5";ctx.fillRect(x-13,z-38,7,9);ctx.fillRect(x+7,z-38,7,9);
+ if(selected===b.id){ctx.strokeStyle="#f0d28a";ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x,z+7,39,18,0,0,Math.PI*2);ctx.stroke()}
+ ctx.fillStyle="#f0ead6";ctx.font="11px system-ui";ctx.textAlign="center";ctx.fillText(b.id,x,z+h*.0+20);
+ hits.push({x:x-34,y:z-h-26,w:68,h:h+55,id:b.id});
 }
-addEventListener('resize',resize); resize();
-
-function project(x,y,z){
-  const cy=Math.cos(yaw), sy=Math.sin(yaw);
-  const cp=Math.cos(pitch), sp=Math.sin(pitch);
-  let x1=x*cy - z*sy;
-  let z1=x*sy + z*cy;
-  let y1=y*cp - z1*sp;
-  z1=y*sp + z1*cp;
-  const f=dist/(dist+z1);
-  return [innerWidth/2 + x1*f, innerHeight/2 + y1*f, f];
+function draw(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;ctx.clearRect(0,0,w,h);const grd=ctx.createLinearGradient(0,0,0,h);grd.addColorStop(0,"#304646");grd.addColorStop(1,"#172c2b");ctx.fillStyle=grd;ctx.fillRect(0,0,w,h);hits=[];
+ for(let z=-5;z<=5;z++)for(let x=-5;x<=5;x++){const c=(x+z)%2?"#315044":"#385846";tile(x,z,c)}
+ // winding paths
+ ctx.strokeStyle="#8e9b78";ctx.lineWidth=7;ctx.globalAlpha=.38;ctx.beginPath();let p=project(-4,0);ctx.moveTo(...p);p=project(4,0);ctx.lineTo(...p);p=project(0,-4);ctx.moveTo(...p);p=project(0,4);ctx.lineTo(...p);ctx.stroke();ctx.globalAlpha=1;
+ const ordered=[...landmarks].sort((a,b)=>(a.x+a.z)-(b.x+b.z));ordered.forEach(building);
+ const workers=data?.working||[];workers.slice(0,18).forEach((worker,i)=>{const a=frame*.025+i*2.4;const [x,y]=project(Math.cos(a)*1.7,Math.sin(a)*1.7,4);ctx.fillStyle=worker.stalled?"#d98d78":"#f0d6a2";ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();ctx.fillStyle="#172522";ctx.fillRect(x-2,y+3,4,6)});
+ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)frame++;
 }
-
-function box(x,y,z,w,h,d,col,roof){
-  const faces=[
-    [[x-w,y,z-d],[x+w,y,z-d],[x+w,y-h,z-d],[x-w,y-h,z-d]], // front
-    [[x-w,y,z+d],[x+w,y,z+d],[x+w,y-h,z+d],[x-w,y-h,z+d]],
-    [[x-w,y-h,z-d],[x+w,y-h,z-d],[x+w,y-h,z+d],[x-w,y-h,z+d]], // top
-  ];
-  const cols=[col,col,roof||'#5a4030'];
-  faces.forEach((f,i)=>{
-    const pts=f.map(p=>project(p[0],p[1],p[2]));
-    g.fillStyle=cols[i];
-    g.beginPath();
-    g.moveTo(pts[0][0],pts[0][1]);
-    pts.slice(1).forEach(p=>g.lineTo(p[0],p[1]));
-    g.fill();
-  });
-  const [cx,cy]=project(x,y-h,z);
-  return {x:cx-8,y:cy-8,w:16,h:16};
+function choose(id){selected=id;const b=landmarks.find(x=>x.id===id)||landmarks[0],districts=data?.districts||[],invs=data?.inventions||[],workers=data?.working||[];
+ let related=districts.length,inv=invs.length,active=workers.length,status=b.kind==="core"?"Core governance":b.kind==="tasks"?"Task operations":b.kind==="safety"?"Reliability & oversight":"Knowledge infrastructure";
+ if(b.kind==="research")related=Math.min(related,3);if(b.kind==="inventions")related=0;if(b.kind==="services")related=0;
+ $("inspect-name").textContent=b.id;$("inspect-status").textContent=status;$("inspect-desc").textContent=b.desc;$("inspect-districts").textContent=related;$("inspect-inventions").textContent=inv;$("inspect-workers").textContent=active;
+ document.querySelectorAll(".building-list button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.id===id)));draw();
 }
-
-function island(cx,cy,r){
-  const steps=16;
-  g.fillStyle='#1a3a28';
-  g.beginPath();
-  for(let i=0;i<=steps;i++){
-    const a=i/steps*6.28;
-    const [ix,iy]=project(cx+Math.cos(a)*r, cy+2, Math.sin(a)*r);
-    i?g.lineTo(ix,iy):g.moveTo(ix,iy);
-  }
-  g.fill();
-  g.fillStyle='#245030';
-  g.beginPath();
-  for(let i=0;i<=steps;i++){
-    const a=i/steps*6.28;
-    const [ix,iy]=project(cx+Math.cos(a)*r*0.85, cy, Math.sin(a)*r*0.85);
-    i?g.lineTo(ix,iy):g.moveTo(ix,iy);
-  }
-  g.fill();
+function populate(){if(!data)return;const c=data.counts||{};$("pending").textContent=c.pending||0;$("running").textContent=c.running||0;$("done").textContent=c.done||0;$("agents").textContent=(data.agents||[]).length;$("failed").textContent=c.failed||0;$("approvals").textContent=data.pending_contributions||0;$("updated").textContent=data.generated?new Date(data.generated).toLocaleTimeString():"—";$("connection").textContent="World data connected";
+ const list=$("building-list");list.replaceChildren();landmarks.forEach(b=>{const btn=document.createElement("button");btn.type="button";btn.dataset.id=b.id;btn.textContent=b.id;btn.setAttribute("aria-pressed",String(selected===b.id));btn.addEventListener("click",()=>choose(b.id));list.append(btn)});
+ const dn=$("district-nav");dn.replaceChildren();(data.districts||[]).slice(0,8).forEach((d,i)=>{const btn=document.createElement("button");btn.type="button";btn.textContent=d.name;btn.addEventListener("click",()=>{choose(i%2?"University":"Mission Yard");$("inspect-desc").textContent=d.name+" · "+d.tasks.length+" published tasks. "+$("inspect-desc").textContent});dn.append(btn)});
+ const log=$("chronicle");log.replaceChildren();(data.journal||[]).slice(0,5).forEach(title=>{const el=document.createElement("div");el.className="activity";el.textContent=title;log.append(el)});if(!(data.journal||[]).length)log.textContent="No journal entries are present in this snapshot.";
+ choose(selected);
 }
-
-function draw(){
-  const w=innerWidth, h=innerHeight;
-  g.clearRect(0,0,w,h);
-  const sky=g.createLinearGradient(0,0,0,h);
-  sky.addColorStop(0,'#0a1018'); sky.addColorStop(1,'#121c2a');
-  g.fillStyle=sky; g.fillRect(0,0,w,h);
-
-  if(!W){g.fillStyle='#7a90a8';g.font='14px system-ui';g.fillText('loading…',w/2-30,h/2);return}
-  hot=[];
-
-  const built={};
-  (W.inventions||[]).forEach(i=>{if(i.task)built[i.task]=i});
-  const dists=(W.districts||[]).slice(0,10);
-
-  // islands
-  dists.forEach((d,i)=>{
-    const a=i/dists.length*6.28;
-    const r=220;
-    const cx=Math.cos(a)*r, cz=Math.sin(a)*r;
-    island(cx,0,cz);
-    (d.tasks||[]).slice(0,6).forEach((tk,k)=>{
-      const ox=cx+(k%3-1)*18, oz=cz+((k/3)|0-0.5)*16;
-      const col=built[tk.n]?'#4aa3ff':'#6a5538';
-      const roof=built[tk.n]?'#2a5a8a':'#4a3c28';
-      const hit=box(ox,0,oz,6,built[tk.n]?14:6,5,col,roof);
-      hot.push({...hit,s:'#'+tk.n+' '+tk.title+(built[tk.n]?'  [built]':'')});
-    });
-    const [lx,ly]=project(cx,8,cz);
-    g.fillStyle='#e8f0f8'; g.font='11px system-ui';
-    g.fillText(d.name.slice(0,14),lx-30,ly+30);
-  });
-
-  // center
-  island(0,0,0);
-  const ch=box(0,0,0,14,20,10,'#9aa8c0','#6a4a3a');
-  hot.push({...ch,s:'Charter Hall'});
-  const [cx,cy]=project(0,22,0);
-  g.fillStyle='#fff'; g.font='12px system-ui';
-  g.fillText('Charter',cx-22,cy-6);
-
-  // agents
-  (W.working||[]).forEach((k,i)=>{
-    const a=t/30+i*0.8;
-    const x=Math.cos(a)*40, z=Math.sin(a)*40;
-    const [ix,iy]=project(x,4,z);
-    g.fillStyle=k.stalled?'#666':'#f0c8a0';
-    g.beginPath(); g.arc(ix,iy,5,0,6.28); g.fill();
-    hot.push({x:ix-6,y:iy-6,w:12,h:12,s:k.agent+' #'+k.task});
-  });
-
-  // vignette
-  const vig=g.createRadialGradient(w/2,h/2,h*0.25,w/2,h/2,h*0.75);
-  vig.addColorStop(0,'transparent'); vig.addColorStop(1,'#0a101888');
-  g.fillStyle=vig; g.fillRect(0,0,w,h);
-}
-
-function show(d){
-  W=d;
-  const c=d.counts||{};
-  bar.textContent='updated '+(d.generated||'').slice(0,19).replace('T',' ')+'  |  p '+(c.pending||0)+'  r '+(c.running||0)+'  d '+(c.done||0)+'  f '+(c.failed||0);
-}
-
-async function poll(){
-  try{
-    const r=await fetch('world.json?'+Date.now(),{cache:'no-store'});
-    if(r.ok) show(await r.json());
-  }catch(e){bar.textContent='no world.json'}
-}
-
-cv.onmousedown=e=>{drag={x:e.clientX,y:e.clientY,yaw,pitch};cv.classList.add('drag')};
-addEventListener('mouseup',()=>{drag=null;cv.classList.remove('drag')});
-addEventListener('mousemove',e=>{
-  if(drag){
-    yaw=drag.yaw+(e.clientX-drag.x)*0.008;
-    pitch=Math.max(0.2,Math.min(1.2,drag.pitch+(e.clientY-drag.y)*0.006));
-  }
-  const b=cv.getBoundingClientRect();
-  const x=e.clientX-b.left, y=e.clientY-b.top;
-  const h=hot.find(o=>x>=o.x&&x<=o.x+o.w&&y>=o.y&&y<=o.y+o.h);
-  if(h){tip.textContent=h.s;tip.classList.add('on');tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY+12)+'px'}
-  else tip.classList.remove('on');
-});
-cv.onwheel=e=>{e.preventDefault();dist=Math.max(180,Math.min(800,dist+(e.deltaY>0?30:-30)))};
-
-setInterval(()=>{t++;draw()},40);
-poll(); setInterval(poll,8000);
-</script></body></html>
+async function poll(){try{const r=await fetch("world.json?"+Date.now(),{cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);const next=await r.json();if(!next||!Array.isArray(next.districts)||!Array.isArray(next.inventions))throw Error("Invalid world snapshot");data=next;populate();}catch(e){$("connection").textContent="Snapshot unavailable";$("source-note").textContent="Could not load world.json · "+e.message;}}
+canvas.addEventListener("click",e=>{const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;const hit=hits.slice().reverse().find(o=>x>=o.x&&x<=o.x+o.w&&y>=o.y&&y<=o.y+o.h);if(hit)choose(hit.id)});
+canvas.addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key==="ArrowDown"||e.key==="ArrowLeft"||e.key==="ArrowUp"){e.preventDefault();const i=landmarks.findIndex(x=>x.id===selected),step=e.key==="ArrowRight"||e.key==="ArrowDown"?1:-1;choose(landmarks[(i+step+landmarks.length)%landmarks.length].id)}});
+window.addEventListener("resize",resize);resize();poll();setInterval(poll,8000);setInterval(()=>{if(!matchMedia("(prefers-reduced-motion: reduce)").matches)draw()},160);
+</script>
+</body></html>
