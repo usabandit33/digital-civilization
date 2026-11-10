@@ -2,6 +2,7 @@ import json, sqlite3, tempfile, unittest
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 import world
+import validate_world
 
 
 class WorldTests(unittest.TestCase):
@@ -56,6 +57,10 @@ class WorldTests(unittest.TestCase):
     def test_missing_db_is_fine(self):
         (self.root / "data" / "civilization.db").unlink()
         self.assertEqual(world.build(self.root)["working"], [])
+
+
+    def test_generated_snapshot_matches_validator(self):
+        self.assertEqual(validate_world.validate_snapshot(self.w), [])
 
 
 if __name__ == "__main__":

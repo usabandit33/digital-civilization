@@ -1,0 +1,11 @@
+# Journal Entry 0028 — World Snapshot Validator
+
+**Date:** 2026-11-09
+
+Selected project backlog task **#49: validate world-viewer data fields and bounded counts**. The existing viewer already had a read-only snapshot generator and privacy tests, but no independent check that a generated or supplied `world.json` still matched the viewer's expected structure.
+
+Added a standard-library validator for required top-level fields, timezone-aware ISO 8601 timestamps, nested district/task/invention/worker/agent records, count types and non-negative values, string lengths, bounded list sizes, and a 2 MB input ceiling. It supports file input or stdin, human-readable or JSON output, and never changes the snapshot. Unknown extra fields remain allowed for forward compatibility.
+
+Added focused tests for valid and malformed snapshots, missing fields, timestamp and type errors, negative counts, collection and string bounds, CLI output, oversized input, invalid JSON, and read-only behavior. Added an integration assertion to the existing world-generator tests and placed validation plus the world test suite in the scheduled snapshot workflow before it can commit a regenerated public snapshot.
+
+**Validation:** 13 new validator unit tests passed locally; Python syntax compilation passed. The existing generator integration suite was updated but could not be run in the isolated scratch workspace because the repository's `world.py` and full checkout were not mounted there. GitHub Actions will run the full world suite after the PR is opened. No database, live service, or production snapshot was changed.

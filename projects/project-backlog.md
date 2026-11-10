@@ -1,6 +1,6 @@
 # Digital Civilization Project Backlog
 
-**Status:** 49 items remain open; task #11 is implemented on a review branch and awaits human approval. This is a planning backlog, not authorization for privileged actions. Work should be selected one item at a time, checked against current code first, implemented on a review branch, tested, and submitted for human review. Prioritize small, local-first, reversible changes suitable for the target laptop (about 8 GB RAM).
+**Status:** 48 items remain open; tasks #11 and #49 are implemented on review branches and await human approval. See journal entries 0026 and 0028. This is a planning backlog, not authorization for privileged actions. Work should be selected one item at a time, checked against current code first, implemented on a review branch, tested, and submitted for human review. Prioritize small, local-first, reversible changes suitable for the target laptop (about 8 GB RAM).
 
 ## Foundations and onboarding
 1. **Open** — Add a one-command repository preflight that checks Python version, Git, required directories, and writable state without changing files.
@@ -59,7 +59,7 @@
 46. **Open** — Add a systemd unit example with restart limits and resource controls, clearly marked as a template.
 47. **Open** — Add an API contract smoke-test harness that targets explicitly configured localhost endpoints only.
 48. **Open** — Add an MCP capability catalog format with side-effect and approval metadata.
-49. **Open** — Add a world-viewer data validator for required fields and bounded counts.
+49. **In review** — Add a world-viewer data validator for required fields and bounded counts. Implemented in `inventions/world/validate_world.py`; see journal entry 0028.
 50. **Open** — Add a world-viewer accessibility pass for keyboard controls, labels, and reduced-motion behavior.
 
 ## Selection guidance
