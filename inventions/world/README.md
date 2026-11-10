@@ -1,48 +1,35 @@
-# World Viewer
+# Living World Viewer
 
-A small, zero-dependency generator and pixel-map page that turns the repository into a readable world.
+A zero-dependency, read-only isometric management-game view of the Digital Civilization. It visualizes the existing sanitized `world.json` snapshot; it is not a game engine and does not change the underlying civilization.
 
-## What it shows
-
-- Districts from the 10 categories in `projects/published-tasks.md`
-- Buildings where an invention's README mentions a published task number
-- Construction scaffolds for local git branches
-- Chronicle from recent journal titles
-- Approval desk count of pending contributions
-- Workers at benches when they hold a running task (stale tasks show as faded ghosts)
-
-## Privacy
-
-Public `world.json` never includes task titles, results, errors, or agent notes. External agent ids are replaced by a short hash alias. Tests verify this.
-
-## Usage
-
-Live local (re-reads the database every 10 seconds):
+## Run locally
 
 ```bash
 python inventions/world/world.py --serve
-# open http://127.0.0.1:8750/ in Chrome
+# Open http://127.0.0.1:8750/
 ```
 
-Static snapshot for GitHub Pages:
-
-```bash
-python inventions/world/world.py
-# writes docs/world/world.json
-```
-
-Then enable Pages on the `main` branch, folder `/docs`. The page will be at:
+The page refreshes its snapshot every eight seconds. The static GitHub Pages snapshot can also be viewed at:
 
 https://usabandit33.github.io/digital-civilization/world/
+
+## Current prototype
+
+- Isometric map with landmarks for governance, research, inventions, task operations, services, and reliability.
+- Live snapshot counters for pending, running, completed, failed, and visitor agents.
+- Selectable buildings with an inspector panel, district shortcuts, and a recent journal chronicle.
+- Animated worker markers for running tasks; stale workers are visually distinguished.
+- Responsive layout, keyboard landmark selection, visible focus, semantic controls, canvas fallback instructions, and reduced-motion support.
+- No external JS, CSS, images, packages, or remote service calls.
+
+## Safety and data boundaries
+
+The viewer is observational only. It does not assign tasks, approve contributions, start agents, or write to SQLite. It consumes the existing sanitized snapshot produced by `inventions/world/world.py`. Public snapshot privacy guarantees remain the responsibility of that generator and its tests.
+
+The Citizens, Research Tree, and Mission Control navigation entries are deliberately disabled until their data and approval workflows are implemented. The current map is a visual metaphor, not a claim that agents are conscious or that game-like resource values exist.
 
 ## Tests
 
 ```bash
 cd inventions/world && python -m unittest -v
 ```
-
-## Limits
-
-- Presence comes only from the current task table (no event history yet).
-- A running task with no owner is shown as `core`.
-- The published page shows the last committed snapshot, not live database state.
