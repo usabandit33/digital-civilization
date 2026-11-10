@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-10T01:56:54.741342+00:00",
+ "generated": "2026-11-10T05:31:38.094685+00:00",
  "demo": false,
  "districts": [
   {
@@ -482,11 +482,12 @@
   {
    "name": "world",
    "task": null,
-   "summary": "A small, zero-dependency generator and pixel-map page that turns the repository into a readable world."
+   "summary": "A zero-dependency, read-only isometric management-game view of the Digital Civilization. It visualizes the existing sanitized `world.json` s"
   }
  ],
  "branches": [],
  "journal": [
+  "Journal Entry 0027 \u2014 Living World Game UI",
   "Journal Entry 0026 \u2014 Task Queue Integrity Checker",
   "Journal Entry 0025 \u2014 Path Output Sanitizer",
   "Journal Entry 0024 \u2014 Repository Preflight",
@@ -495,8 +496,7 @@
   "Journal 0021: Structured Output Guide and Project Backlog",
   "Journal Entry 0020 \u2014 Agent Health Check",
   "Journal Entry 0019 \u2014 3D Orbit World",
-  "Journal Entry 0018 \u2014 Diorama World",
-  "Journal Entry 0017 \u2014 World Map Rebuild"
+  "Journal Entry 0018 \u2014 Diorama World"
  ],
  "counts": {
   "pending": 0,
