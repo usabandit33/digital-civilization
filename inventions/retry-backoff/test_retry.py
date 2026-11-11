@@ -82,7 +82,7 @@ class RetryTests(unittest.TestCase):
                 run_with_retry(lambda: None, attempts=value)
 
     def test_invalid_delays_are_rejected(self):
-        for value in (-0.1, float("inf"), float("nan"), True, "0.2", None):
+        for value in (-0.1, float("inf"), float("nan"), True, "0.2", None, 10**1000):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 run_with_retry(lambda: None, initial_delay=value)
             with self.subTest(value=value), self.assertRaises(ValueError):
