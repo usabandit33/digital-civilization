@@ -16,7 +16,7 @@ Added `system/run_tests.py` and its tests. The runner:
 Updated the system guide with usage and exit-code documentation. Reconciled backlog statuses for the already-merged repository preflight (PR #9), queue integrity checker (PR #11), and Living World accessibility work (PR #12). Task #49 remains open because PR #13 still needs its branch conflicts resolved.
 
 **Validation performed:**
-- 10/10 runner unit tests passed in an isolated scratch workspace.
+- 11/11 runner unit tests passed in an isolated scratch workspace.
 - An end-to-end synthetic checkout discovered and passed three separate suites.
 - Python syntax compilation and Python 3.9 grammar checks passed.
 - The complete existing repository test suite was not run: the GitHub-connected workspace does not provide a local checkout of the repository. The new runner is intended to execute the full suite after checkout.

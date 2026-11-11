@@ -168,6 +168,14 @@ class CliTests(unittest.TestCase):
         self.assertEqual(code, 2)
         self.assertFalse(json.loads(output.getvalue())["ok"])
 
+    def test_text_cli_reports_missing_repository(self):
+        with mock.patch.object(run_tests, "find_repo_root", return_value=None):
+            output = io.StringIO()
+            with mock.patch("sys.stdout", output):
+                code = run_tests.main(["--root", "/not-a-repository"])
+        self.assertEqual(code, 2)
+        self.assertIn("Could not locate a repository", output.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()

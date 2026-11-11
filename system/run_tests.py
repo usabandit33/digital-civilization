@@ -232,7 +232,7 @@ def _positive_timeout(value: str) -> int:
 def _render_text(result: dict[str, Any]) -> None:
     print("Digital Civilization test runner")
     if not result["suites"]:
-        print("No test suites were discovered.")
+        print(result.get("error", "No test suites were discovered."))
         return
 
     for suite in result["suites"]:
