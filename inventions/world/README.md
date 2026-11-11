@@ -33,3 +33,17 @@ The Citizens, Research Tree, and Mission Control navigation entries are delibera
 ```bash
 cd inventions/world && python -m unittest -v
 ```
+
+## Snapshot validation
+
+Validate the generated public snapshot before publishing or consuming it:
+
+```bash
+python inventions/world/validate_world.py
+python inventions/world/validate_world.py docs/world/world.json --json
+cat docs/world/world.json | python inventions/world/validate_world.py -
+```
+
+The validator checks required top-level fields, timezone-aware ISO 8601 timestamps, nested district/task/invention/worker/agent records, count types and non-negative values, string lengths, bounded collection sizes, and a 2 MB input ceiling. JSON output includes an `ok` boolean and an `errors` array. Exit code `0` means valid; `1` means invalid or unreadable.
+
+It uses only the Python standard library and is read-only. OS read errors report an error number without echoing the supplied filesystem path. Unknown fields are allowed for forward compatibility. The scheduled snapshot workflow validates the generated snapshot and runs the world tests before committing an updated public snapshot.
