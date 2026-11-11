@@ -4,7 +4,13 @@ A small, dependency-free helper for retrying explicitly selected transient failu
 
 ## Usage
 
-    from inventions.retry_backoff.retry import run_with_retry
+The directory name contains a hyphen, so add it to the import path when using
+the helper from the repository root:
+
+    import sys
+    sys.path.insert(0, "inventions/retry-backoff")
+
+    from retry import run_with_retry
     import urllib.error
     import urllib.request
 
