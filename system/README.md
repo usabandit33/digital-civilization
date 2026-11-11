@@ -9,6 +9,7 @@ Deployment, operations, and constraints for the Digital Civilization.
 | `hardware-notes.md` | Authoritative resource budget and machine constraints |
 | `setup.md` | Step-by-step setup instructions |
 | `repo_preflight.py` | Read-only checkout readiness checks |
+| `run_tests.py` | Discovers and runs each standard-library test suite separately |
 | `systemd.example` | Example user systemd unit for continuous operation |
 
 ## Repository preflight
@@ -33,6 +34,28 @@ Run its tests from the repository root:
 ~~~bash
 python -m unittest discover -s system/tests -v
 ~~~
+
+
+## Repository test runner
+
+Run from the repository root or another working directory:
+
+~~~bash
+python system/run_tests.py
+python system/run_tests.py --json
+python system/run_tests.py --timeout 180
+~~~
+
+The runner discovers Python files named `test*.py` and reports each project suite separately. Files directly inside a project directory belong to that directory's suite; files inside a directory named `tests` belong to the parent project suite. Known virtual environments, caches, build directories, and symlinked directories are skipped.
+
+Each discovered test directory runs in its own Python process through `unittest discover`. The runner adds the project and repository roots to that process's import path, uses no shell, installs no packages, and makes no network calls itself. A suite has a 120-second timeout by default; `--timeout` accepts 1 to 3600 seconds. Captured output is bounded to the last 8,000 characters per suite.
+
+- Exit code `0`: every discovered suite passed.
+- Exit code `1`: one or more suites failed or timed out.
+- Exit code `2`: the repository root could not be found or no test suites were discovered.
+- `--json`: emits suite names, test-file counts, statuses, durations, return codes, and bounded output.
+
+The runner does not modify repository files. Individual tests may create temporary files or start local-only test fixtures; review test code before running tests from an untrusted repository. The runner's own tests are included in the `system` suite.
 
 ## Design goals
 
