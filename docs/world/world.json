@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-11T10:37:05.655409+00:00",
+ "generated": "2026-11-11T17:26:55.011793+00:00",
  "demo": false,
  "districts": [
   {
@@ -488,6 +488,7 @@
  "branches": [],
  "journal": [
   "Journal Entry 0029 \u2014 Standard-Library Test Runner",
+  "Journal Entry 0028 \u2014 World Snapshot Validator",
   "Journal Entry 0027 \u2014 Living World Game UI",
   "Journal Entry 0026 \u2014 Task Queue Integrity Checker",
   "Journal Entry 0025 \u2014 Path Output Sanitizer",
@@ -495,8 +496,7 @@
   "Journal 0023: Recent Activity Summary",
   "Journal Entry 0022 \u2014 Minimal Status Tool Schema",
   "Journal 0021: Structured Output Guide and Project Backlog",
-  "Journal Entry 0020 \u2014 Agent Health Check",
-  "Journal Entry 0019 \u2014 3D Orbit World"
+  "Journal Entry 0020 \u2014 Agent Health Check"
  ],
  "counts": {
   "pending": 0,
