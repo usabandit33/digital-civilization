@@ -31,12 +31,16 @@ def run_with_retry(
         raise ValueError("attempts must be a positive integer")
 
     for name, value in (("initial_delay", initial_delay), ("max_delay", max_delay)):
-        if (
-            isinstance(value, bool)
-            or not isinstance(value, (int, float))
-            or not math.isfinite(value)
-            or value < 0
-        ):
+        try:
+            valid_delay = (
+                not isinstance(value, bool)
+                and isinstance(value, (int, float))
+                and math.isfinite(value)
+                and value >= 0
+            )
+        except OverflowError:
+            valid_delay = False
+        if not valid_delay:
             raise ValueError(f"{name} must be a finite, non-negative number")
 
     if not isinstance(retry_on, tuple) or not retry_on or not all(
