@@ -1,9 +1,9 @@
 # Digital Civilization Project Backlog
 
-**Status:** 49 items remain open; task #11 is implemented on a review branch and awaits human approval. This is a planning backlog, not authorization for privileged actions. Work should be selected one item at a time, checked against current code first, implemented on a review branch, tested, and submitted for human review. Prioritize small, local-first, reversible changes suitable for the target laptop (about 8 GB RAM).
+**Status:** 46 items remain open; task #31 is implemented on a review branch. Tasks #1, #11, and #50 are complete; task #49 remains open while PR #13's branch conflicts are resolved. This is a planning backlog, not authorization for privileged actions. Work should be selected one item at a time, checked against current code first, implemented on a review branch, tested, and submitted for human review. Prioritize small, local-first, reversible changes suitable for the target laptop (about 8 GB RAM).
 
 ## Foundations and onboarding
-1. **Open** — Add a one-command repository preflight that checks Python version, Git, required directories, and writable state without changing files.
+1. **Done** — Add a one-command repository preflight that checks Python version, Git, required directories, and writable state without changing files. Implemented in `system/repo_preflight.py`; see journal entry 0024 and PR #9.
 2. **Open** — Create a concise architecture map linking identity, task queue, memory, tools, services, and world viewer.
 3. **Open** — Add a new-agent onboarding checklist with expected commands and success signals.
 4. **Open** — Document supported Python versions and a lightweight dependency policy.
@@ -15,7 +15,7 @@
 10. **Open** — Add a machine-readable project catalog with status, owner/agent, path, and last-reviewed date.
 
 ## Task queue and orchestration
-11. **In review** — Add queue integrity checks for duplicate IDs, invalid statuses, and missing required fields. Implemented in `core/queue_integrity.py`; see journal entry 0026.
+11. **Done** — Add queue integrity checks for duplicate IDs, invalid statuses, and missing required fields. Implemented in `core/queue_integrity.py`; see journal entry 0026 and PR #11.
 12. **Open** — Define and test a canonical task lifecycle state machine.
 13. **Open** — Add stale-claim detection that reports candidates but never auto-reassigns without policy.
 14. **Open** — Add a dry-run mode for queue mutations.
@@ -39,7 +39,7 @@
 30. **Open** — Add a report that identifies unreferenced memory files without deleting them.
 
 ## Tools, quality, and observability
-31. **Open** — Add a standard-library test runner that discovers project test suites and reports each separately.
+31. **In review** — Add a standard-library test runner that discovers project test suites and reports each separately. Implemented in `system/run_tests.py`; see journal entry 0029.
 32. **Open** — Add a static check for accidental network calls in tools labeled local-only.
 33. **Open** — Add a tool manifest validator for input/output contracts and declared side effects.
 34. **Open** — Add a read-only filesystem inventory tool with configurable depth and exclusions.
@@ -60,7 +60,7 @@
 47. **Open** — Add an API contract smoke-test harness that targets explicitly configured localhost endpoints only.
 48. **Open** — Add an MCP capability catalog format with side-effect and approval metadata.
 49. **Open** — Add a world-viewer data validator for required fields and bounded counts.
-50. **In review** — Add a world-viewer accessibility pass for keyboard controls, labels, and reduced-motion behavior. Implemented in the Living World viewer prototype; see journal entry 0027.
+50. **Done** — Add a world-viewer accessibility pass for keyboard controls, labels, and reduced-motion behavior. Implemented in the Living World viewer prototype; see journal entry 0027 and PR #12.
 
 ## Selection guidance
 Start with tasks 1, 11, 21, 31, or 41 because they improve reliability and safety across the project. Re-check the repository and open PRs before claiming any item to avoid duplicate work.
