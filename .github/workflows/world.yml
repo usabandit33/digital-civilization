@@ -50,6 +50,12 @@ jobs:
           p.write_text(json.dumps(data, indent=1) + '\n')
           "
 
+      - name: Validate generated snapshot
+        run: python inventions/world/validate_world.py docs/world/world.json
+
+      - name: Run world tests
+        run: python -m unittest discover -s inventions/world -p 'test_*.py' -v
+
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
