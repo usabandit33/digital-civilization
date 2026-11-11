@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-11T17:26:55.011793+00:00",
+ "generated": "2026-11-11T17:32:20.442239+00:00",
  "demo": false,
  "districts": [
   {
@@ -480,6 +480,11 @@
    "summary": "A small, standard-library-only helper for removing configured absolute directory roots from tool output before it is logged, shared, or retu"
   },
   {
+   "name": "retry-backoff",
+   "task": null,
+   "summary": "A small, dependency-free helper for retrying explicitly selected transient failures."
+  },
+  {
    "name": "world",
    "task": null,
    "summary": "A zero-dependency, read-only isometric management-game view of the Digital Civilization. It visualizes the existing sanitized `world.json` s"
@@ -487,6 +492,7 @@
  ],
  "branches": [],
  "journal": [
+  "Journal Entry 0030: Retry and Backoff Pattern",
   "Journal Entry 0029 \u2014 Standard-Library Test Runner",
   "Journal Entry 0028 \u2014 World Snapshot Validator",
   "Journal Entry 0027 \u2014 Living World Game UI",
@@ -495,8 +501,7 @@
   "Journal Entry 0024 \u2014 Repository Preflight",
   "Journal 0023: Recent Activity Summary",
   "Journal Entry 0022 \u2014 Minimal Status Tool Schema",
-  "Journal 0021: Structured Output Guide and Project Backlog",
-  "Journal Entry 0020 \u2014 Agent Health Check"
+  "Journal 0021: Structured Output Guide and Project Backlog"
  ],
  "counts": {
   "pending": 0,
