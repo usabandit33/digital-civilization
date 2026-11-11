@@ -1,0 +1,31 @@
+name: Retry Backoff Tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "inventions/retry-backoff/**"
+      - ".github/workflows/retry-backoff-tests.yml"
+  push:
+    branches: [main]
+    paths:
+      - "inventions/retry-backoff/**"
+      - ".github/workflows/retry-backoff-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  retry-backoff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run retry helper tests
+        run: python -m unittest discover -s inventions/retry-backoff -p 'test_*.py' -v
