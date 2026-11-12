@@ -12,7 +12,7 @@ Added `inventions/path-scope/`, a standard-library helper that:
 - Rejects explicit `..` components, invalid paths, missing roots, and non-directory roots.
 - Resolves existing symlinks before checking containment, including symlink escapes, dangling links, and loops.
 - Supports validating a destination that does not exist yet, or requiring an existing target with `must_exist=True`.
-- Performs no file writes, reads, deletion, network calls, or subprocesses.
+- Does not open files or read file contents, create or modify files, delete files, make network calls, or start subprocesses.
 
 Added 17 unit tests covering valid relative and absolute paths, root handling, traversal, outside paths, missing targets, invalid inputs, and symlink edge cases. Added a focused GitHub Actions workflow and documented the usage and safety boundary.
 

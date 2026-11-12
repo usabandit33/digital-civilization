@@ -33,6 +33,6 @@ The implementation and tests use only the Python standard library. Tests use tem
 
 ## Safety boundary
 
-This helper does not create, read, write, or delete files. It validates a path at one point in time. It does **not** make a later check-then-open sequence race-free: another process could replace a symlink after validation. Do not rely on it alone when untrusted processes can modify directories concurrently. In that threat model, use descriptor-relative filesystem operations and platform-specific no-follow protections.
+This helper does not open files or read their contents, and it does not create, modify, or delete files. It only checks filesystem metadata and resolves paths. It validates a path at one point in time. It does **not** make a later check-then-open sequence race-free: another process could replace a symlink after validation. Do not rely on it alone when untrusted processes can modify directories concurrently. In that threat model, use descriptor-relative filesystem operations and platform-specific no-follow protections.
 
 Path parsing follows the host operating system. This is a local filesystem helper, not a URL decoder or archive-extraction sanitizer. Callers must separately handle encoded paths and archive member names before converting them to filesystem paths.
