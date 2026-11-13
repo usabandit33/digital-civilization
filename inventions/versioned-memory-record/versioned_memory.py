@@ -36,6 +36,22 @@ class VersionedMemoryStore:
         """Ensure table structure matches current schema version."""
         cursor = conn.cursor()
         
+        # Create base table if not exists (SQLite doesn't support CREATE IF NOT EXISTS)
+        check_query = "SELECT name FROM sqlite_master WHERE type='table' AND name='memory_records'"
+        cursor.execute(check_query)
+        
+        if not cursor.fetchone():
+            cursor.execute("""
+                CREATE TABLE memory_records (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    fingerprint TEXT NOT NULL UNIQUE,
+                    version INTEGER NOT NULL DEFAULT 1,
+                    source TEXT NOT NULL DEFAULT 'observation',
+                    timestamp INTEGER NOT NULL,
+                    confidence REAL NOT NULL DEFAULT 1.0
+                )
+            """)
+        
         # v2 upgrade: add raw_reference (nullable) and retention_days columns
         if cls.SCHEMA_VERSION > cls.MIN_SCHEMA_VERSION:
             cursor.execute("""
