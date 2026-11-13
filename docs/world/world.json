@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-13T15:31:55.147447+00:00",
+ "generated": "2026-11-13T17:24:54.936337+00:00",
  "demo": false,
  "districts": [
   {
@@ -715,9 +715,7 @@
    "summary": "A zero-dependency, read-only isometric management-game view of the Digital Civilization. It visualizes the existing sanitized `world.json` s"
   }
  ],
- "branches": [
-  "main"
- ],
+ "branches": [],
  "journal": [
   "Journal Entry 0032: Published 50 High-Value Agent Tasks",
   "Journal Entry 0031: 3D Living World Visual & UI Overhaul",
