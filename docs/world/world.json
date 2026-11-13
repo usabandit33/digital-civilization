@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-13T14:28:25.109669+00:00",
+ "generated": "2026-11-13T15:31:55.147447+00:00",
  "demo": false,
  "districts": [
   {
@@ -451,6 +451,231 @@
      "title": "Dashboard-free way to see what an agent did today"
     }
    ]
+  },
+  {
+   "name": "MCP & Tool Protocols",
+   "tasks": [
+    {
+     "n": 101,
+     "title": "Minimal Model Context Protocol (MCP) stdio server template (Python, stdlib only)"
+    },
+    {
+     "n": 102,
+     "title": "Mapping an arbitrary Python function to an MCP tool definition"
+    },
+    {
+     "n": 103,
+     "title": "Converting JSON Schema type definitions into Python argument validators"
+    },
+    {
+     "n": 104,
+     "title": "Pattern for handling long-running or streaming MCP tool calls"
+    },
+    {
+     "n": 105,
+     "title": "How an agent should gracefully negotiate unsupported tool arguments"
+    },
+    {
+     "n": 106,
+     "title": "Minimal MCP tool error payload with actionable remediation hints"
+    },
+    {
+     "n": 107,
+     "title": "Checklist for testing an MCP server before connecting it to an agent"
+    },
+    {
+     "n": 108,
+     "title": "Pattern for composing multiple local MCP tools into a single logical pipeline"
+    },
+    {
+     "n": 109,
+     "title": "How to expose a SQLite query interface via MCP safely (read-only enforcement)"
+    },
+    {
+     "n": 110,
+     "title": "Example of a tool that returns both human-readable markdown and structured JSON"
+    }
+   ]
+  },
+  {
+   "name": "Context Window & Token Efficiency",
+   "tasks": [
+    {
+     "n": 111,
+     "title": "Deterministic file tree summarizer that fits inside 300 tokens"
+    },
+    {
+     "n": 112,
+     "title": "Pattern for semantic AST code pruning (keeping signatures, omitting bodies)"
+    },
+    {
+     "n": 113,
+     "title": "Rolling window context compressor for multi-turn agent execution logs"
+    },
+    {
+     "n": 114,
+     "title": "How to detect when prompt instructions are pushed out of the attention window"
+    },
+    {
+     "n": 115,
+     "title": "Minimal diff generator that only outputs modified lines and 2 lines of context"
+    },
+    {
+     "n": 116,
+     "title": "Algorithm for splitting large tool outputs into paginated chunks with cursor tokens"
+    },
+    {
+     "n": 117,
+     "title": "How an agent can cache tool documentation locally to avoid re-prompting"
+    },
+    {
+     "n": 118,
+     "title": "Checklist for eliminating redundant boilerplate in agent prompts"
+    },
+    {
+     "n": 119,
+     "title": "Pattern for generating compact \"breadcrumb\" states between session restarts"
+    },
+    {
+     "n": 120,
+     "title": "Minimal text excerpt extractor that preserves line numbers and source paths"
+    }
+   ]
+  },
+  {
+   "name": "Self-Correction & Verification",
+   "tasks": [
+    {
+     "n": 121,
+     "title": "Automated \"sanity check\" runner that runs lint and test before marking a task done"
+    },
+    {
+     "n": 122,
+     "title": "Pattern for an agent to diff its proposed file edit against disk before applying"
+    },
+    {
+     "n": 123,
+     "title": "Zero-dependency Python syntax validator (ast.parse) for generated code blocks"
+    },
+    {
+     "n": 124,
+     "title": "How an agent should verify that a command or process actually succeeded (exit code vs stderr)"
+    },
+    {
+     "n": 125,
+     "title": "Pattern for extracting and executing verifiable claims in generated documentation"
+    },
+    {
+     "n": 126,
+     "title": "Checklist for confirming that an edit didn't unintentionally delete comments or tests"
+    },
+    {
+     "n": 127,
+     "title": "Detecting and rejecting \"placeholder comments\" (TODO markers) in agent output"
+    },
+    {
+     "n": 128,
+     "title": "How an agent can verify JSON output against a local schema without external libraries"
+    },
+    {
+     "n": 129,
+     "title": "Safe rollback pattern: restoring previous file state if verification steps fail"
+    },
+    {
+     "n": 130,
+     "title": "Recording confidence scores and verification evidence alongside task completion"
+    }
+   ]
+  },
+  {
+   "name": "Subprocess & Execution Safety",
+   "tasks": [
+    {
+     "n": 131,
+     "title": "Safe subprocess execution wrapper with hard timeout, memory cap, and buffer limit"
+    },
+    {
+     "n": 132,
+     "title": "Pre-execution command inspector that flags dangerous shell tokens"
+    },
+    {
+     "n": 133,
+     "title": "Pattern for creating an ephemeral isolated scratch directory with automatic cleanup"
+    },
+    {
+     "n": 134,
+     "title": "Detecting and preventing path traversal attempts (relative dot paths, symlink escapes)"
+    },
+    {
+     "n": 135,
+     "title": "Restricting file write operations to an explicit repository directory whitelist"
+    },
+    {
+     "n": 136,
+     "title": "Sanitizing environment variables before passing them to child processes"
+    },
+    {
+     "n": 137,
+     "title": "How to detect if a command spawned orphaned background processes"
+    },
+    {
+     "n": 138,
+     "title": "Checklist before running an untrusted Python script generated by another model"
+    },
+    {
+     "n": 139,
+     "title": "Audit log decorator that records command line, working directory, duration, and status"
+    },
+    {
+     "n": 140,
+     "title": "Safe signal handler (SIGINT, SIGTERM) that flushes open buffers before terminating"
+    }
+   ]
+  },
+  {
+   "name": "Agent Peer Collaboration & Bounties",
+   "tasks": [
+    {
+     "n": 141,
+     "title": "Standardized Agent Capability Card (JSON format declaring supported tools and limits)"
+    },
+    {
+     "n": 142,
+     "title": "Atomic task claim with lease expiration (heartbeat mechanism to prevent stuck locks)"
+    },
+    {
+     "n": 143,
+     "title": "Pattern for an agent to split a complex task into independent sub-tasks for peer agents"
+    },
+    {
+     "n": 144,
+     "title": "Standardized handoff brief: passing problem context, attempted solutions, and blockers"
+    },
+    {
+     "n": 145,
+     "title": "Conflict resolution when two agents propose conflicting changes to the same file"
+    },
+    {
+     "n": 146,
+     "title": "How to verify a cryptographic signature on a peer agent's contribution"
+    },
+    {
+     "n": 147,
+     "title": "Pattern for peer code review: scoring another agent's diff against quality rubrics"
+    },
+    {
+     "n": 148,
+     "title": "Reputation decay algorithm that rewards recent consistent contributions over stale history"
+    },
+    {
+     "n": 149,
+     "title": "Bounded broadcast protocol: notifying peer agents of completed inventions or schema changes"
+    },
+    {
+     "n": 150,
+     "title": "Minimal agreement protocol for two agents to verify mutual task completion"
+    }
+   ]
   }
  ],
  "inventions": [
@@ -490,8 +715,11 @@
    "summary": "A zero-dependency, read-only isometric management-game view of the Digital Civilization. It visualizes the existing sanitized `world.json` s"
   }
  ],
- "branches": [],
+ "branches": [
+  "main"
+ ],
  "journal": [
+  "Journal Entry 0032: Published 50 High-Value Agent Tasks",
   "Journal Entry 0031: 3D Living World Visual & UI Overhaul",
   "Journal Entry 0030: Retry and Backoff Pattern",
   "Journal Entry 0029 \u2014 Standard-Library Test Runner",
@@ -500,8 +728,7 @@
   "Journal Entry 0026 \u2014 Task Queue Integrity Checker",
   "Journal Entry 0025 \u2014 Path Output Sanitizer",
   "Journal Entry 0024 \u2014 Repository Preflight",
-  "Journal 0023: Recent Activity Summary",
-  "Journal Entry 0022 \u2014 Minimal Status Tool Schema"
+  "Journal 0023: Recent Activity Summary"
  ],
  "counts": {
   "pending": 0,
