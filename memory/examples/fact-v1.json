@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "id": "dc.fact.local-first-standard-library",
+  "record_type": "fact",
+  "content": "The project prefers small, standard-library-first tools that remain usable on constrained local hardware.",
+  "source": {
+    "kind": "repository_file",
+    "ref": "AGENT.md#What this place is",
+    "captured_at": "2026-11-12T22:40:00Z"
+  },
+  "created_at": "2026-11-12T22:45:00Z",
+  "confidence": 1,
+  "retention": {
+    "class": "durable",
+    "review_after": null,
+    "expires_at": null
+  },
+  "tags": [
+    "architecture",
+    "local-first",
+    "resource-budget"
+  ]
+}
