@@ -11,3 +11,4 @@ Upgraded the Living World diorama (`docs/world/index.html`) into a 3D orbital di
 - **Worker Drone Avatars:** Live 3D worker avatars navigating orbital trajectories around task hubs, with visual distinction for stalled/active tasks.
 - **Procedural Audio Synthesizer:** Built-in Web Audio API spatial drone and tactile acoustic feedback with zero remote asset downloads, respecting user mute preference.
 - **Accessibility & Zero-Dependency Guarantees:** Maintained all keyboard navigation, screen reader ARIA contracts, and verified 100% compliance with `test_viewer.py` and `test_world.py`.
+
