@@ -8,6 +8,6 @@ Added a Draft 2020-12 JSON Schema for version 1.0 memory records. The contract i
 
 Added a representative fact record, standard-library contract tests, usage and versioning documentation, and a focused GitHub Actions workflow. The documentation explicitly states that the schema is not a storage engine or migration, and that retention timestamps do not trigger automatic deletion. It also warns against putting credentials or unnecessary private data in record content or source references.
 
-**Validation:** the 10 focused tests passed in an isolated scratch workspace; the schema and example parsed as JSON; Python syntax compilation passed. These tests inspect key schema constraints and the checked-in example, but are not a full Draft 2020-12 validator. The complete repository test runner was not run because this session does not have a local checkout. The focused GitHub Actions workflow will validate the pushed branch.
+**Validation:** all 10 focused tests passed in GitHub Actions on Python 3.12, and the schema JSON parsing step passed. These tests inspect key schema constraints and the checked-in example, but are not a full Draft 2020-12 validator. The complete repository test runner was not run because this session does not have a local checkout.
 
 No existing memory files were migrated, no records were written to a live store, and no retention or deletion process was introduced.
