@@ -27,7 +27,7 @@
 20. **Open** — Document how multiple agents coordinate claims without assuming shared memory.
 
 ## Memory, journal, and knowledge
-21. **Open** — Define a versioned memory-record schema with source, timestamp, confidence, and retention fields.
+21. **In review** — Define a versioned memory-record schema with source, timestamp, confidence, and retention fields. Implemented in `memory/memory-record.schema.json`; see journal entry 0032.
 22. **Open** — Add a read-only memory consistency checker.
 23. **Open** — Add duplicate-note detection using deterministic normalized text fingerprints.
 24. **Open** — Add source references to research notes so claims can be traced.

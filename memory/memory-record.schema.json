@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digital-civilization.local/schemas/memory-record-v1.json",
+  "title": "Digital Civilization memory record",
+  "description": "Version 1.0 record contract for sourced, confidence-rated, retention-aware project memory.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "record_type",
+    "content",
+    "source",
+    "created_at",
+    "confidence",
+    "retention"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "record_type": {
+      "type": "string",
+      "enum": [
+        "fact",
+        "decision",
+        "hypothesis",
+        "observation",
+        "lesson"
+      ]
+    },
+    "content": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "An explicit evidence-strength estimate, not a calibrated probability."
+    },
+    "retention": {
+      "$ref": "#/$defs/retention"
+    },
+    "tags": {
+      "type": "array",
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      }
+    },
+    "related_ids": {
+      "type": "array",
+      "maxItems": 50,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/id"
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "ref",
+        "captured_at"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "conversation",
+            "repository_file",
+            "tool_output",
+            "web_page",
+            "human_input",
+            "system_event"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "description": "A URL, repository-relative path, or opaque source identifier. Never put credentials here."
+        },
+        "captured_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "retention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "class",
+        "review_after",
+        "expires_at"
+      ],
+      "properties": {
+        "class": {
+          "type": "string",
+          "enum": [
+            "ephemeral",
+            "working",
+            "durable"
+          ]
+        },
+        "review_after": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

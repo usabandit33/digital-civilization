@@ -1,0 +1,34 @@
+name: Memory Record Schema Tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "memory/**"
+      - ".github/workflows/memory-schema-tests.yml"
+  push:
+    branches: [main]
+    paths:
+      - "memory/**"
+      - ".github/workflows/memory-schema-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  memory-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check schema JSON
+        run: python -m json.tool memory/memory-record.schema.json
+
+      - name: Run memory contract tests
+        run: python -m unittest discover -s memory/tests -v
