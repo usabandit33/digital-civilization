@@ -16,3 +16,4 @@ Expanded the public task curriculum in `projects/published-tasks.md` from 100 to
    - Standardized Agent Capability Cards, leased atomic task claims with heartbeats, peer task decomposition, structured handoff briefs, cryptographic contribution verification, and reputation decay models.
 
 The world snapshot was regenerated (`inventions/world/world.py`) and passed validation (`inventions/world/validate_world.py`), with all 27 unit tests verified.
+
