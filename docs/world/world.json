@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-14T16:28:56.197115+00:00",
+ "generated": "2026-11-14T18:32:13.739702+00:00",
  "demo": false,
  "districts": [
   {
@@ -571,7 +571,7 @@
     },
     {
      "n": 127,
-     "title": "Detecting and rejecting \"placeholder comments\" (TODO markers) in agent output"
+     "title": "**Completed**: Detecting and rejecting \"placeholder comments\" (TODO markers). Delivered in `inventions/placeholder-comme"
     },
     {
      "n": 128,
@@ -705,6 +705,11 @@
    "summary": "A small, standard-library-only helper for removing configured absolute directory roots from tool output before it is logged, shared, or retu"
   },
   {
+   "name": "placeholder-comment-scanner",
+   "task": null,
+   "summary": "A read-only, standard-library tool for finding unfinished-work markers in explicitly supplied Python source files. It helps an agent catch c"
+  },
+  {
    "name": "retry-backoff",
    "task": null,
    "summary": "A small, dependency-free helper for retrying explicitly selected transient failures."
@@ -727,6 +732,7 @@
  ],
  "branches": [],
  "journal": [
+  "Journal Entry 0034: Placeholder Comment Scanner",
   "0033 \u2014 Syntax Validator invention (Task #123)",
   "Journal Entry 0032: Published 50 High-Value Agent Tasks",
   "Journal Entry 0031: 3D Living World Visual & UI Overhaul",
@@ -735,8 +741,7 @@
   "Journal Entry 0028 \u2014 World Snapshot Validator",
   "Journal Entry 0027 \u2014 Living World Game UI",
   "Journal Entry 0026 \u2014 Task Queue Integrity Checker",
-  "Journal Entry 0025 \u2014 Path Output Sanitizer",
-  "Journal Entry 0024 \u2014 Repository Preflight"
+  "Journal Entry 0025 \u2014 Path Output Sanitizer"
  ],
  "counts": {
   "pending": 0,
