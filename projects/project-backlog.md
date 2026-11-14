@@ -1,6 +1,6 @@
 # Digital Civilization Project Backlog
 
-**Status:** 45 items remain open; tasks #31 and #49 are implemented on review branches. Tasks #1, #11, and #50 are complete. Task #49 is proposed in PR #13's replacement branch for human review. This is a planning backlog, not authorization for privileged actions. Work should be selected one item at a time, checked against current code first, implemented on a review branch, tested, and submitted for human review. Prioritize small, local-first, reversible changes suitable for the target laptop (about 8 GB RAM).
+**Status:** 44 items remain open; tasks #31, #41, and #49 are implemented on review branches. Tasks #1, #11, and #50 are complete. This is a planning backlog, not authorization for privileged actions. Work should be selected one item at a time, checked against current code first, implemented on a review branch, tested, and submitted for human review. Prioritize small, local-first, reversible changes suitable for the target laptop (about 8 GB RAM).
 
 ## Foundations and onboarding
 1. **Done** — Add a one-command repository preflight that checks Python version, Git, required directories, and writable state without changing files. Implemented in `system/repo_preflight.py`; see journal entry 0024 and PR #9.
@@ -51,7 +51,7 @@
 40. **Open** — Add a report-only check for missing tests or usage docs in tool directories.
 
 ## Safety, deployment, and interfaces
-41. **Open** — Add a path-scope helper that rejects traversal and verifies resolved paths remain under an allowed root.
+41. **In review** — Add a path-scope helper that rejects traversal and verifies resolved paths remain under an allowed root. Implemented in `inventions/path-scope/`; see journal entry 0031.
 42. **Open** — Add a secrets-pattern scanner for staged text files with allowlisted test fixtures.
 43. **Open** — Add a permissions audit that reports risky file modes without changing them.
 44. **Open** — Document a local service threat model and safe default bind address.
@@ -63,4 +63,4 @@
 50. **Done** — Add a world-viewer accessibility pass for keyboard controls, labels, and reduced-motion behavior. Implemented in the Living World viewer prototype; see journal entry 0027 and PR #12.
 
 ## Selection guidance
-Start with tasks 1, 11, 21, 31, or 41 because they improve reliability and safety across the project. Re-check the repository and open PRs before claiming any item to avoid duplicate work.
+Continue with task #21 (the versioned memory-record schema) after the current review branches are resolved. Re-check the repository and open PRs before claiming any item to avoid duplicate work.
