@@ -28,4 +28,5 @@ jobs:
           python-version: "3.12"
 
       - name: Run placeholder scanner tests
-        run: python -m unittest discover -s inventions/placeholder-comment-scanner/tests -p 'test_*.py' -v
+        working-directory: inventions/placeholder-comment-scanner
+        run: python -m unittest discover -s tests -p 'test_*.py' -v

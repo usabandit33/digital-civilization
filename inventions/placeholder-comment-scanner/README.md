@@ -64,7 +64,8 @@ An error takes precedence over findings and returns `2` so callers do not mistak
 ## Tests
 
 ```bash
-python -m unittest discover -s inventions/placeholder-comment-scanner/tests -p 'test_*.py' -v
+cd inventions/placeholder-comment-scanner
+python -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
 Task reference: **Task #127** in `projects/published-tasks.md`.
