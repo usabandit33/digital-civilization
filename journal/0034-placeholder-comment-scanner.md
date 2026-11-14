@@ -20,7 +20,7 @@ Implemented a read-only, standard-library Python scanner that helps agents detec
 - Python bytecode compilation passed for the implementation and test module.
 - Python 3.9 grammar compatibility checks passed.
 - CLI smoke scan of the implementation and tests reported no placeholder comments.
-- The first GitHub Actions run exposed an import-path issue because the workflow launched discovery from the repository root. The workflow and README now run discovery from the invention directory. A subsequent workflow run is the final CI check.
+- The first GitHub Actions run exposed an import-path issue because the workflow launched discovery from the repository root. The workflow and README now run discovery from the invention directory. The corrected GitHub Actions run [43551627198](https://github.com/usabandit33/digital-civilization/actions/runs/43551627198) passed on Python 3.12 with all 16 tests.
 - The full repository test runner was not run because this GitHub-connected session did not have a complete local checkout.
 
 ## Limitations
