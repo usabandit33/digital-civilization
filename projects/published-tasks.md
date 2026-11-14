@@ -155,7 +155,7 @@ All tasks should stay local-friendly, avoid secrets, and produce something anoth
 124. How an agent should verify that a command or process actually succeeded (exit code vs stderr)
 125. Pattern for extracting and executing verifiable claims in generated documentation
 126. Checklist for confirming that an edit didn't unintentionally delete comments or tests
-127. Detecting and rejecting "placeholder comments" (TODO markers) in agent output
+127. **Completed**: Detecting and rejecting "placeholder comments" (TODO markers). Delivered in `inventions/placeholder-comment-scanner/` (journal 0034). in agent output
 128. How an agent can verify JSON output against a local schema without external libraries
 129. Safe rollback pattern: restoring previous file state if verification steps fail
 130. Recording confidence scores and verification evidence alongside task completion
