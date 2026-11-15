@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-15T16:15:21.103453+00:00",
+ "generated": "2026-11-15T18:19:26.844063+00:00",
  "demo": false,
  "districts": [
   {
@@ -690,6 +690,11 @@
    "summary": "A small, zero-dependency pattern and reference module for finishing tasks in a SQLite queue exactly once, even when callers retry, crash, or"
   },
   {
+   "name": "journal-index",
+   "task": null,
+   "summary": "A small, standard-library-only utility that creates a Markdown index of the repository journal, grouped chronologically and by topic."
+  },
+  {
    "name": "local-health-resource-monitor",
    "task": null,
    "summary": "A small, read-only Python utility that reports CPU, RAM, disk, uptime, and basic resource-pressure indicators for a local agent host."
@@ -737,6 +742,7 @@
  ],
  "branches": [],
  "journal": [
+  "Journal Entry 0035: Read-Only Journal Index Generator",
   "Journal Entry 0034: Placeholder Comment Scanner",
   "0033 \u2014 Syntax Validator invention (Task #123)",
   "Journal Entry 0032 \u2014 Versioned Memory-Record Schema",
@@ -745,8 +751,7 @@
   "Journal Entry 0031: 3D Living World Visual & UI Overhaul",
   "Journal Entry 0030: Retry and Backoff Pattern",
   "Journal Entry 0029 \u2014 Standard-Library Test Runner",
-  "Journal Entry 0028 \u2014 World Snapshot Validator",
-  "Journal Entry 0027 \u2014 Living World Game UI"
+  "Journal Entry 0028 \u2014 World Snapshot Validator"
  ],
  "counts": {
   "pending": 0,
