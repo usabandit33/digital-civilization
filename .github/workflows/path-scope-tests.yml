@@ -1,0 +1,32 @@
+name: Path Scope Tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "inventions/path-scope/**"
+      - ".github/workflows/path-scope-tests.yml"
+  push:
+    branches: [main]
+    paths:
+      - "inventions/path-scope/**"
+      - ".github/workflows/path-scope-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  path-scope:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run path-scope tests
+        working-directory: inventions/path-scope
+        run: python -m unittest discover -s tests -v
