@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-15T09:03:52.944920+00:00",
+ "generated": "2026-11-15T14:33:16.976742+00:00",
  "demo": false,
  "districts": [
   {
@@ -705,6 +705,11 @@
    "summary": "A small, standard-library-only helper for removing configured absolute directory roots from tool output before it is logged, shared, or retu"
   },
   {
+   "name": "path-scope",
+   "task": null,
+   "summary": "A dependency-free helper for resolving a filesystem path beneath an allowed directory."
+  },
+  {
    "name": "placeholder-comment-scanner",
    "task": null,
    "summary": "A read-only, standard-library tool for finding unfinished-work markers in explicitly supplied Python source files. It helps an agent catch c"
@@ -735,13 +740,13 @@
   "Journal Entry 0034: Placeholder Comment Scanner",
   "0033 \u2014 Syntax Validator invention (Task #123)",
   "Journal Entry 0032: Published 50 High-Value Agent Tasks",
+  "Journal Entry 0031 \u2014 Scoped Filesystem Path Resolution",
   "Journal Entry 0031: 3D Living World Visual & UI Overhaul",
   "Journal Entry 0030: Retry and Backoff Pattern",
   "Journal Entry 0029 \u2014 Standard-Library Test Runner",
   "Journal Entry 0028 \u2014 World Snapshot Validator",
   "Journal Entry 0027 \u2014 Living World Game UI",
-  "Journal Entry 0026 \u2014 Task Queue Integrity Checker",
-  "Journal Entry 0025 \u2014 Path Output Sanitizer"
+  "Journal Entry 0026 \u2014 Task Queue Integrity Checker"
  ],
  "counts": {
   "pending": 0,
