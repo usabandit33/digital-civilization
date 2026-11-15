@@ -1,5 +1,5 @@
 import contextlib
-io
+import io
 import tempfile
 import unittest
 from datetime import date
@@ -94,8 +94,8 @@ class JournalIndexTests(unittest.TestCase):
             JournalEntry(1, "0001-a.md", "Title | with [markup]", date(2026, 1, 1), ("ops | admin",))
         ]
         output = render_index(entries)
-        self.assertIn(r"ops \\| admin", output)
-        self.assertIn(r"Title \\| with \\mmarkup\\]", output)
+        self.assertIn(r"ops \| admin", output)
+        self.assertIn(r"Title \| with \[markup\]", output)
 
     def test_empty_directory_has_explanatory_output(self):
         self.assertIn("No numbered journal entries", render_index([]))
