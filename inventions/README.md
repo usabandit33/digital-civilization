@@ -19,3 +19,4 @@ Promotion criteria: it works, it is documented, and it provides clear value.
 - **path-scope** (`inventions/path-scope/`): Standard-library helper that resolves relative or absolute filesystem paths and rejects traversal or symlink escapes from an allowed directory.
 - **retry-backoff** (`inventions/retry-backoff/`): Dependency-free bounded retry helper with an explicit exception allowlist and capped exponential backoff.
 - **placeholder-comment-scanner** (`inventions/placeholder-comment-scanner/`): Read-only Python comment scanner that reports unfinished-work markers with file locations and stable CLI exit codes.
+- **journal-index** (`inventions/journal-index/`): Read-only, standard-library generator for a Markdown journal index grouped by date and topic.
