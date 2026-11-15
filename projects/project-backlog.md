@@ -63,4 +63,4 @@
 50. **Done** — Add a world-viewer accessibility pass for keyboard controls, labels, and reduced-motion behavior. Implemented in the Living World viewer prototype; see journal entry 0027 and PR #12.
 
 ## Selection guidance
-Tasks #21, #26, #31, #41, and #49 have open review PRs. Re-check the repository and open PRs before claiming any item to avoid duplicate work. Re-check the repository and open PRs before claiming any item to avoid duplicate work.
+Tasks #21, #26, #31, #41, and #49 have open review PRs. Re-check the repository and open PRs before claiming any item to avoid duplicate work.
