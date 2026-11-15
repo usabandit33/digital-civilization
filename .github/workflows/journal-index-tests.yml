@@ -1,0 +1,37 @@
+name: Journal Index Tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "inventions/journal-index/**"
+      - "journal/**"
+      - ".github/workflows/journal-index-tests.yml"
+  push:
+    branches: [main]
+    paths:
+      - "inventions/journal-index/**"
+      - "journal/**"
+      - ".github/workflows/journal-index-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  journal-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run journal index tests
+        working-directory: inventions/journal-index
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+
+      - name: Compile implementation and tests
+        run: python -m py_compile inventions/journal-index/journal_index.py inventions/journal-index/tests/test_journal_index.py
