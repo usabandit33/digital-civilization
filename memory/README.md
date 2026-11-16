@@ -66,6 +66,61 @@ key structure and that the checked-in example conforms to the contract's
 important constraints. They are not a complete JSON Schema implementation;
 use a Draft 2020-12 validator when validating arbitrary records in production.
 
+## Read-only consistency checker
+
+`check_consistency.py` checks memory-record files against the supported v1.0
+contract and checks relationships across the records scanned together.
+
+Run it from the repository root:
+
+~~~bash
+# Scan the default memory/records directory (an absent directory is an empty set)
+python memory/check_consistency.py
+
+# Validate the checked-in example
+python memory/check_consistency.py memory/examples
+
+# Scan a record directory and emit machine-readable output
+python memory/check_consistency.py memory/records --json
+
+# Scan multiple directories together so related_ids can resolve across them
+python memory/check_consistency.py memory/records memory/archive --json
+~~~
+
+The checker:
+
+- Reads explicit JSON files or direct-child .json files from supplied directories.
+- Does not recurse, follow symlinked entries, execute content, access the network,
+  or modify records.
+- Rejects malformed JSON, unsupported fields and values, invalid timestamps,
+  duplicate IDs, duplicate list values, and out-of-range confidence scores.
+- Reports related_ids that do not resolve within the scanned record set as
+  warnings. Scan the complete set of related records together to avoid
+  misleading unresolved-reference warnings.
+- Limits each record to 1 MiB and each scan to 10,000 files.
+- Reports relative file labels, field names, stable issue codes, and record IDs.
+  It does not include memory content or absolute host paths in the report.
+
+Exit codes:
+
+| Code | Meaning |
+|---|---|
+| 0 | No findings. A missing default memory/records directory is treated as an empty set. |
+| 1 | One or more record or cross-reference findings were reported. |
+| 2 | The schema, input path, or a file could not be read or processed. |
+
+This is a focused standard-library implementation of the repository's v1.0
+memory-record contract, not a general Draft 2020-12 JSON Schema engine. It
+checks that the checked-in schema still matches the supported v1.0 constraints
+before scanning. If the schema changes, update the checker and tests together.
+The report is advisory: it never repairs, migrates, archives, or deletes data.
+
+Run all memory tests:
+
+~~~bash
+python -m unittest discover -s memory/tests -v
+~~~
+
 ## Other memory contents
 
 Over time, this directory may also contain durable decisions, research indexes,
