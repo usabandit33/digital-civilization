@@ -90,7 +90,7 @@ python memory/check_consistency.py memory/records memory/archive --json
 The checker:
 
 - Reads explicit JSON files or direct-child .json files from supplied directories.
-- Does not recurse, follows no symlinked entries, execute content, access the network,
+- Does not recurse or follow symlinked entries, execute content, access the network,
   or modify records. A supplied path that is itself a symlink is rejected.
 - Rejects malformed JSON, unsupported fields and values, invalid timestamps,
   duplicate IDs, duplicate list values, and out-of-range confidence scores.
