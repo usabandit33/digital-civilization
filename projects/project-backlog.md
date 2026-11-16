@@ -1,6 +1,6 @@
 # Digital Civilization Project Backlog
 
-**Status:** 43 items remain open; tasks #31, #41, and #49 are implemented on review branches. Tasks #1, #11, and #50 are complete. This is a planning backlog, not authorization for privileged actions. Work should be selected one item at a time, checked against current code first, implemented on a review branch, tested, and submitted for human review. Prioritize small, local-first, reversible changes suitable for the target laptop (about 8 GB RAM).
+**Status:** 41 items remain open; tasks #21, #26, #31, #41, and #49 are complete. Task #22 is in review. Tasks #1, #11, and #50 were already complete. This is a planning backlog, not authorization for privileged actions. Work should be selected one item at a time, checked against current code first, implemented on a review branch, tested, and submitted for human review. Prioritize small, local-first, reversible changes suitable for the target laptop (about 8 GB RAM).
 
 ## Foundations and onboarding
 1. **Done** — Add a one-command repository preflight that checks Python version, Git, required directories, and writable state without changing files. Implemented in `system/repo_preflight.py`; see journal entry 0024 and PR #9.
@@ -27,19 +27,19 @@
 20. **Open** — Document how multiple agents coordinate claims without assuming shared memory.
 
 ## Memory, journal, and knowledge
-21. **In review** — Define a versioned memory-record schema with source, timestamp, confidence, and retention fields. Implemented in `memory/memory-record.schema.json`; see journal entry 0032.
-22. **Open** — Add a read-only memory consistency checker.
+21. **Done** — Define a versioned memory-record schema with source, timestamp, confidence, and retention fields. Implemented in `memory/memory-record.schema.json`; see journal entry 0032 and merged PR #18.
+22. **In review** — Add a read-only memory consistency checker. Implemented in `memory/check_consistency.py`; see journal entry 0036.
 23. **Open** — Add duplicate-note detection using deterministic normalized text fingerprints.
 24. **Open** — Add source references to research notes so claims can be traced.
 25. **Open** — Define a distinction between durable facts, hypotheses, and stale observations.
-26. **In review** — Add a journal index generator that links entries by date and topic. Implemented in `inventions/journal-index/`; see journal entry 0035 and the replacement PR.
+26. **Done** — Add a journal index generator that links entries by date and topic. Implemented in `inventions/journal-index/`; see journal entry 0035 and merged PR #21.
 27. **Open** — Add a safe archive policy for old logs with preview and explicit confirmation.
 28. **Open** — Add a memory export format that omits secrets and private machine paths.
 29. **Open** — Add a compact session handoff template for resumable work.
 30. **Open** — Add a report that identifies unreferenced memory files without deleting them.
 
 ## Tools, quality, and observability
-31. **In review** — Add a standard-library test runner that discovers project test suites and reports each separately. Implemented in `system/run_tests.py`; see journal entry 0029.
+31. **Done** — Add a standard-library test runner that discovers project test suites and reports each separately. Implemented in `system/run_tests.py`; see journal entry 0029 and merged PR #14.
 32. **Open** — Add a static check for accidental network calls in tools labeled local-only.
 33. **Open** — Add a tool manifest validator for input/output contracts and declared side effects.
 34. **Open** — Add a read-only filesystem inventory tool with configurable depth and exclusions.
@@ -51,7 +51,7 @@
 40. **Open** — Add a report-only check for missing tests or usage docs in tool directories.
 
 ## Safety, deployment, and interfaces
-41. **In review** — Add a path-scope helper that rejects traversal and verifies resolved paths remain under an allowed root. Implemented in `inventions/path-scope/`; see journal entry 0031.
+41. **Done** — Add a path-scope helper that rejects traversal and verifies resolved paths remain under an allowed root. Implemented in `inventions/path-scope/`; see journal entry 0031 and merged PR #17.
 42. **Open** — Add a secrets-pattern scanner for staged text files with allowlisted test fixtures.
 43. **Open** — Add a permissions audit that reports risky file modes without changing them.
 44. **Open** — Document a local service threat model and safe default bind address.
@@ -59,8 +59,8 @@
 46. **Open** — Add a systemd unit example with restart limits and resource controls, clearly marked as a template.
 47. **Open** — Add an API contract smoke-test harness that targets explicitly configured localhost endpoints only.
 48. **Open** — Add an MCP capability catalog format with side-effect and approval metadata.
-49. **In review** — Add a world-viewer data validator for required fields and bounded counts. Implemented in `inventions/world/validate_world.py`; see journal entry 0028 and replacement PR for #13.
+49. **Done** — Add a world-viewer data validator for required fields and bounded counts. Implemented in `inventions/world/validate_world.py`; see journal entry 0028 and merged PR #15.
 50. **Done** — Add a world-viewer accessibility pass for keyboard controls, labels, and reduced-motion behavior. Implemented in the Living World viewer prototype; see journal entry 0027 and PR #12.
 
 ## Selection guidance
-Tasks #21, #26, #31, #41, and #49 have open review PRs. Re-check the repository and open PRs before claiming any item to avoid duplicate work.
+Tasks #21, #26, #31, #41, and #49 are complete through merged PRs #18, #21, #14, #17, and #15 respectively. Task #22 is in review. PR #20 remains open but is superseded by merged PR #21; check current open PRs and repository state before selecting further work.
