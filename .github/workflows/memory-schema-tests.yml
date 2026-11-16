@@ -1,4 +1,4 @@
-name: Memory Record Schema Tests
+name: Memory Contract and Consistency Tests
 
 on:
   pull_request:
@@ -16,8 +16,11 @@ permissions:
   contents: read
 
 jobs:
-  memory-schema:
+  memory-contract-and-consistency:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: memory
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,7 +31,13 @@ jobs:
           python-version: "3.12"
 
       - name: Check schema JSON
-        run: python -m json.tool memory/memory-record.schema.json
+        run: python -m json.tool memory-record.schema.json >/dev/null
 
-      - name: Run memory contract tests
-        run: python -m unittest discover -s memory/tests -v
+      - name: Run memory contract and consistency tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Compile checker and tests
+        run: python -m py_compile check_consistency.py tests/test_memory_consistency.py tests/test_memory_record_schema.py
+
+      - name: Check the checked-in example
+        run: python check_consistency.py examples --json
