@@ -1,6 +1,6 @@
 # Digital Civilization Project Backlog
 
-**Status:** 41 items remain open; tasks #21, #26, #31, #41, and #49 are complete. Task #22 is in review. Tasks #1, #11, and #50 were already complete. This is a planning backlog, not authorization for privileged actions. Work should be selected one item at a time, checked against current code first, implemented on a review branch, tested, and submitted for human review. Prioritize small, local-first, reversible changes suitable for the target laptop (about 8 GB RAM).
+**Status:** 40 items remain open; tasks #1, #11, #21, #22, #26, #31, #41, #49, and #50 are complete. Task #42 is in review. This is a planning backlog, not authorization for privileged actions. Work should be selected one item at a time, checked against current code first, implemented on a review branch, tested, and submitted for human review. Prioritize small, local-first, reversible changes suitable for the target laptop (about 8 GB RAM).
 
 ## Foundations and onboarding
 1. **Done** — Add a one-command repository preflight that checks Python version, Git, required directories, and writable state without changing files. Implemented in `system/repo_preflight.py`; see journal entry 0024 and PR #9.
@@ -28,7 +28,7 @@
 
 ## Memory, journal, and knowledge
 21. **Done** — Define a versioned memory-record schema with source, timestamp, confidence, and retention fields. Implemented in `memory/memory-record.schema.json`; see journal entry 0032 and merged PR #18.
-22. **In review** — Add a read-only memory consistency checker. Implemented in `memory/check_consistency.py`; see journal entry 0036.
+22. **Done** — Add a read-only memory consistency checker. Implemented in `memory/check_consistency.py`; see journal entry 0036 and merged PR #22.
 23. **Open** — Add duplicate-note detection using deterministic normalized text fingerprints.
 24. **Open** — Add source references to research notes so claims can be traced.
 25. **Open** — Define a distinction between durable facts, hypotheses, and stale observations.
@@ -52,7 +52,7 @@
 
 ## Safety, deployment, and interfaces
 41. **Done** — Add a path-scope helper that rejects traversal and verifies resolved paths remain under an allowed root. Implemented in `inventions/path-scope/`; see journal entry 0031 and merged PR #17.
-42. **Open** — Add a secrets-pattern scanner for staged text files with allowlisted test fixtures.
+42. **In review** — Add a secrets-pattern scanner for staged text files with allowlisted test fixtures. Implemented in `inventions/staged-secrets-scanner/`; see journal entry 0037.
 43. **Open** — Add a permissions audit that reports risky file modes without changing them.
 44. **Open** — Document a local service threat model and safe default bind address.
 45. **Open** — Add a deployment preflight that validates service configuration without starting services.
@@ -63,4 +63,4 @@
 50. **Done** — Add a world-viewer accessibility pass for keyboard controls, labels, and reduced-motion behavior. Implemented in the Living World viewer prototype; see journal entry 0027 and PR #12.
 
 ## Selection guidance
-Tasks #21, #26, #31, #41, and #49 are complete through merged PRs #18, #21, #14, #17, and #15 respectively. Task #22 is in review. PR #20 remains open but is superseded by merged PR #21; check current open PRs and repository state before selecting further work.
+Tasks #1, #11, #21, #22, #26, #31, #41, #49, and #50 are complete through merged PRs #9, #11, #18, #22, #21, #14, #17, #15, and #12 respectively. Task #42 is in review. PR #20 remains open but is superseded by merged PR #21; check current open PRs and repository state before selecting further work.
