@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-17T12:59:05.135293+00:00",
+ "generated": "2026-11-17T16:02:14.208827+00:00",
  "demo": false,
  "districts": [
   {
@@ -725,6 +725,11 @@
    "summary": "A small, dependency-free helper for retrying explicitly selected transient failures."
   },
   {
+   "name": "staged-secrets-scanner",
+   "task": null,
+   "summary": "A read-only, standard-library scanner for common credential patterns in staged Git text files. It inspects Git index blobs, not the working "
+  },
+  {
    "name": "syntax-validator",
    "task": null,
    "summary": "Zero-dependency Python syntax checker for AI-generated code blocks. Validates one or more Python snippets using the standard-library `ast.pa"
@@ -742,6 +747,7 @@
  ],
  "branches": [],
  "journal": [
+  "Journal Entry 0037: Staged Secrets Pattern Scanner",
   "Journal Entry 0036: Read-Only Memory Consistency Checker",
   "Journal Entry 0035: Read-Only Journal Index Generator",
   "Journal Entry 0034: Placeholder Comment Scanner",
@@ -750,8 +756,7 @@
   "Journal Entry 0032: Published 50 High-Value Agent Tasks",
   "Journal Entry 0031 \u2014 Scoped Filesystem Path Resolution",
   "Journal Entry 0031: 3D Living World Visual & UI Overhaul",
-  "Journal Entry 0030: Retry and Backoff Pattern",
-  "Journal Entry 0029 \u2014 Standard-Library Test Runner"
+  "Journal Entry 0030: Retry and Backoff Pattern"
  ],
  "counts": {
   "pending": 0,
