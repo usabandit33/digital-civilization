@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "path": "inventions/staged-secrets-scanner/tests/fixtures/synthetic-secrets.txt",
+      "rules": [
+        "aws_access_key_id",
+        "github_classic_token",
+        "google_api_key",
+        "private_key_header",
+        "slack_token"
+      ],
+      "reason": "Synthetic pattern examples for scanner tests; these values are not credentials."
+    }
+  ]
+}
