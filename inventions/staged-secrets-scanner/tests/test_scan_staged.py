@@ -223,7 +223,12 @@ class GitIndexTests(unittest.TestCase):
         self.assertEqual(report["files_checked"], 1)
 
     def test_json_report_never_contains_matched_secret_value(self):
-        secret = "AKIA" + "IOSFODNN7EXAMPLE"
+        fixture = HERE / "tests" / "fixtures" / "synthetic-secrets.txt"
+        secret = next(
+            line.partition("=")[2]
+            for line in fixture.read_text(encoding="utf-8").splitlines()
+            if line.startswith("AWS_ACCESS_KEY_ID=")
+        )
         self.stage("config.txt", "AWS_ACCESS_KEY_ID=" + secret)
         command = [
             sys.executable, str(HERE / "scan_staged.py"),
