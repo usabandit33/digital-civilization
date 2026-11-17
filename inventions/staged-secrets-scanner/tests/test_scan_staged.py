@@ -224,21 +224,19 @@ class GitIndexTests(unittest.TestCase):
 
     def test_json_report_never_contains_matched_secret_value(self):
         fixture = HERE / "tests" / "fixtures" / "synthetic-secrets.txt"
-        secret = next(
-            line.partition("=")[2]
-            for line in fixture.read_text(encoding="utf-8").splitlines()
-            if line.startswith("AWS_ACCESS_KEY_ID=")
-        )
-        self.stage("config.txt", "AWS_ACCESS_KEY_ID=" + secret)
+        self.stage("config.txt", fixture.read_bytes())
         command = [
             sys.executable, str(HERE / "scan_staged.py"),
             "--repo", str(self.root), "--allowlist", str(self.allowlist), "--json",
         ]
         completed = subprocess.run(command, capture_output=True, text=True, check=False)
         self.assertEqual(completed.returncode, 1)
-        self.assertNotIn(secret, completed.stdout)
-        self.assertNotIn(secret, completed.stderr)
+        for fixture_line in fixture.read_text(encoding="utf-8").splitlines():
+            if "=" in fixture_line:
+                self.assertNotIn(fixture_line.partition("=")[2], completed.stdout)
+                self.assertNotIn(fixture_line.partition("=")[2], completed.stderr)
         report = json.loads(completed.stdout)
+        self.assertGreaterEqual(len(report["findings"]), 5)
         self.assertEqual(report["findings"][0]["rule"], "aws_access_key_id")
 
     def test_unmerged_index_fails_closed(self):
