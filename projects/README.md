@@ -8,4 +8,8 @@ Each project should have its own subdirectory with at least:
 - Working files
 - Notes on blockers or open questions
 
+## Orientation
+
+- [Architecture map](architecture-map.md): directory responsibilities, system flow, and the normal review path.
+
 When a project produces a stable, tested capability, move or promote the result to `inventions/` or `services/` and update this directory accordingly.
