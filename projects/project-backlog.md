@@ -4,7 +4,7 @@
 
 ## Foundations and onboarding
 1. **Done** — Add a one-command repository preflight that checks Python version, Git, required directories, and writable state without changing files. Implemented in `system/repo_preflight.py`; see journal entry 0024 and PR #9.
-2. **Open** — Create a concise architecture map linking identity, task queue, memory, tools, services, and world viewer.
+2. **In review** — Create a concise architecture map linking identity, task queue, memory, tools, services, and world viewer. Implemented in `projects/architecture-map.md`; see journal entry 0038 and PR #24.
 3. **Open** — Add a new-agent onboarding checklist with expected commands and success signals.
 4. **Open** — Document supported Python versions and a lightweight dependency policy.
 5. **Open** — Add a repository glossary for project-specific terms and state transitions.
